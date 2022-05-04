@@ -24,7 +24,7 @@ class DiscountBanner extends StatelessWidget {
         TextSpan(
           style: TextStyle(color: Colors.white),
           children: [
-            TextSpan(text: "ĐM thằng Thiên\n"),
+            TextSpan(text: "Khuyến mãi\n"),
             TextSpan(
               text: "Giảm giá 20%",
               style: TextStyle(

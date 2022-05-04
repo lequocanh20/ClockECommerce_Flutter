@@ -69,7 +69,7 @@ class _BodyState extends State<Body> {
     return AppBar(
       title: Column(
         children: [
-          Text(
+          const Text(
             "Giỏ hàng của bạn",
             style: TextStyle(color: Colors.black),
           ),
