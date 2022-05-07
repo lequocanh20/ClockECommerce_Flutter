@@ -22,7 +22,7 @@ class _PopularProductsState extends State<PopularProducts> {
         Padding(
           padding:
               EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
-          child: SectionTitle(title: "Sản phẩm phổ biến", press: () {}),
+          child: SectionTitle(title: "Sản phẩm mới nhất", press: () {}),
         ),
         SizedBox(height: getProportionateScreenWidth(20)),
         GetBodyFeaturedProduct(),

@@ -50,6 +50,9 @@ class _SignFormState extends State<SignForm> {
 
   @override
   Widget build(BuildContext context) {
+    if (isAPIcallProcess) {
+      return const Center(child: CircularProgressIndicator());
+    }
     return Form(
             key: _formKey,
             child: Column(

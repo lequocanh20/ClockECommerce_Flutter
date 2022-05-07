@@ -1,4 +1,5 @@
 import 'package:clockecommerce/models/carts.dart';
+import 'package:clockecommerce/models/constants.dart';
 import 'package:clockecommerce/models/items.dart';
 import 'package:clockecommerce/models/size_config.dart';
 import 'package:clockecommerce/screens/cart/components/cart_card.dart';
@@ -79,6 +80,7 @@ class _BodyState extends State<Body> {
           ),
         ],
       ),
+      backgroundColor: kPrimaryColor,
     );
   }
 }

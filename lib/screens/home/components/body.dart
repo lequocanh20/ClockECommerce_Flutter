@@ -1,5 +1,9 @@
+import 'package:clockecommerce/models/constants.dart';
 import 'package:clockecommerce/models/size_config.dart';
+import 'package:clockecommerce/screens/home/components/home_fragment.dart';
+import 'package:clockecommerce/screens/profile/profile_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'categories.dart';
 import 'discount_banner.dart';
 import 'home_header.dart';
@@ -14,34 +18,56 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
-  // var _result;
-  // void initState() {
-  //   super.initState();
-  //   loadScreenHeight();
-  // }
-
-  // loadScreenHeight() async {
-  //   _result = await SharedService.isLoggedIn();
-  // }
+  var selectIndex = 0;
   @override
   Widget build(BuildContext context) {
-    SizeConfig().init(context);
-    return SafeArea(
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(height: getProportionateScreenHeight(20)),
-            HomeHeader(),
-            SizedBox(height: getProportionateScreenWidth(10)),
-            DiscountBanner(),
-            Category(),
-            SpecialOffers(),
-            SizedBox(height: getProportionateScreenWidth(30)),
-            PopularProducts(),
-            SizedBox(height: getProportionateScreenWidth(30)),
-          ],
-        ),
+    List<Widget> screen = [
+      HomeDetail(),
+      ProfileScreen()
+    ];
+    return Scaffold(
+      bottomNavigationBar: BottomNavigationBar(
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        type: BottomNavigationBarType.fixed,
+        currentIndex: selectIndex,
+        onTap: (index) {
+          setState(() {
+            selectIndex = index;
+          });
+        },
+        items: [
+          BottomNavigationBarItem(
+            icon: SvgPicture.asset(
+                  "assets/icons/Shop Icon.svg"),
+            activeIcon: SvgPicture.asset(
+              "assets/icons/Shop Icon.svg",
+            color: kPrimaryColor),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: SvgPicture.asset(
+                  "assets/icons/User Icon.svg"),
+            activeIcon: SvgPicture.asset(
+                  "assets/icons/User Icon.svg",
+                  color: kPrimaryColor),
+            label: 'Account',
+          ),
+          BottomNavigationBarItem(
+            icon: SvgPicture.asset("assets/icons/Heart Icon.svg"),
+            activeIcon: SvgPicture.asset("assets/icons/Heart Icon.svg",
+            color: kPrimaryColor),
+            label: 'Favorite',
+          ),   
+          BottomNavigationBarItem(
+            icon: SvgPicture.asset("assets/icons/Chat bubble Icon.svg"),
+            activeIcon: SvgPicture.asset("assets/icons/Chat bubble Icon.svg",
+            color: kPrimaryColor),
+            label: 'Chat',
+          ),         
+        ],
       ),
+      body: screen[selectIndex],
     );
   }
 }

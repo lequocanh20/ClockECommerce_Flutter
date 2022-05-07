@@ -1,3 +1,4 @@
+import 'package:clockecommerce/models/config.dart';
 import 'package:clockecommerce/models/constants.dart';
 import 'package:clockecommerce/models/product_detail.dart';
 import 'package:clockecommerce/models/products.dart';
@@ -53,22 +54,21 @@ class _ProductCardState extends State<ProductCard> {
               AspectRatio(
                 aspectRatio: 1.02,
                 child: Container(
-                  padding: EdgeInsets.all(getProportionateScreenWidth(10)),
+                  padding: EdgeInsets.all(getProportionateScreenWidth(5)),
                   decoration: BoxDecoration(
                     color: kSecondaryColor.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(15),
                   ),
                   child: Hero(
                     tag: widget.product!.id.toString(),
-                    child: Image.asset(widget.product!.productImage!),
+                    child: Image.network(Uri.https(Config.apiURL, widget.product!.productImage!).toString()),
                   ),
                 ),
               ),
               const SizedBox(height: 10),
               Text(
-                widget.product!.name.length > 15 ? widget.product!.name.substring(0, 15) + "..." : widget.product!.name,
-                style: TextStyle(color: Colors.black),
-                maxLines: 3,
+                widget.product!.name.length > 15 ? widget.product!.name.substring(0, 28) + "..." : widget.product!.name,
+                style: TextStyle(color: Colors.black, fontSize: 14, fontWeight: FontWeight.bold),
+                maxLines: 2,
               ),            
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -76,8 +76,8 @@ class _ProductCardState extends State<ProductCard> {
                   Text(
                     Utilities.formatCurrency(widget.product!.price),
                     style: TextStyle(
-                      fontSize: getProportionateScreenWidth(18),
-                      fontWeight: FontWeight.w600,
+                      fontSize: getProportionateScreenWidth(15),
+                      fontWeight: FontWeight.w500,
                       color: kPrimaryColor,
                     ),
                   ),

@@ -1,4 +1,5 @@
 import 'package:clockecommerce/models/categories.dart';
+import 'package:clockecommerce/models/config.dart';
 import 'package:clockecommerce/models/constants.dart';
 import 'package:clockecommerce/models/size_config.dart';
 import 'package:clockecommerce/screens/category/category_screen.dart';
@@ -53,7 +54,7 @@ class CategoryCard extends StatelessWidget {
                 color: kSecondaryColor.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(0),
               ),
-              child: Image.asset(image!),
+              child: Image.network(Uri.https(Config.apiURL, image!).toString()),
             ),
             SizedBox(height: 5),
             // Text(text, textAlign: TextAlign.center)
@@ -83,7 +84,7 @@ class GetCategory extends ConsumerWidget {
                 return CategoryCard(
                   image: categories[index].imageCate,
                   press: () {
-                    Navigator.pushNamed(context, CategoryScreen.routeName, arguments: categories[index].id);
+                    Navigator.pushNamed(context, CategoryScreen.routeName, arguments: categories[index]);
                   },
                 );
               },

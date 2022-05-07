@@ -3,6 +3,7 @@ import 'package:clockecommerce/screens/category/category_screen.dart';
 import 'package:clockecommerce/screens/details/details_screen.dart';
 import 'package:clockecommerce/screens/home/home_screen.dart';
 import 'package:clockecommerce/screens/login_success/login_success_screen.dart';
+import 'package:clockecommerce/screens/profile/profile_screen.dart';
 import 'package:clockecommerce/screens/sign_in/sign_in_screen.dart';
 import 'package:clockecommerce/screens/sign_up/sign_up_screen.dart';
 import 'package:clockecommerce/screens/splash/splash_screen.dart';
@@ -16,5 +17,6 @@ final Map<String, WidgetBuilder> routes = {
   HomeScreen.routeName: (context) => HomeScreen(),
   DetailsScreen.routeName:(context) => DetailsScreen(),
   CategoryScreen.routeName:(context)=> const CategoryScreen(),
-  CartScreen.routeName: (context) => CartScreen()
+  CartScreen.routeName: (context) => CartScreen(),
+  ProfileScreen.routeName: (context) => ProfileScreen()
 };

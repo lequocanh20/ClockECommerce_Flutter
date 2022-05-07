@@ -1,3 +1,4 @@
+import 'package:clockecommerce/models/config.dart';
 import 'package:clockecommerce/models/constants.dart';
 import 'package:clockecommerce/models/product_detail.dart';
 import 'package:clockecommerce/models/products.dart';
@@ -29,7 +30,7 @@ class _ProductImagesState extends State<ProductImages> {
             aspectRatio: 1,
             child: Hero(
               tag: widget.product.id.toString(),
-              child: Image.asset(widget.product.productImage!),
+              child: Image.network(Uri.https(Config.apiURL, widget.product.productImage!).toString()),
             ),
           ),
         ),
