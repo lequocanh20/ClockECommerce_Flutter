@@ -1,3 +1,4 @@
+import 'package:clockecommerce/screens/profile_detail/ProfileDetail_Screen.dart';
 import 'package:clockecommerce/services/shared_service.dart';
 import 'package:flutter/material.dart';
 
@@ -16,7 +17,9 @@ class Body extends StatelessWidget {
           ProfileMenu(
             text: "Tài khoản của tôi",
             icon: "assets/icons/User Icon.svg",
-            press: () => {},
+            press: () => {
+              Navigator.pushNamed(context, ProfileDetailScreen.routeName)
+            },
           ),
           ProfileMenu(
             text: "Lịch sử mua hàng",

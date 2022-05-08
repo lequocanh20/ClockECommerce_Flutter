@@ -2,8 +2,10 @@ import 'package:clockecommerce/components/default_button.dart';
 import 'package:clockecommerce/models/constants.dart';
 import 'package:clockecommerce/models/size_config.dart';
 import 'package:clockecommerce/models/utilities.dart';
+import 'package:clockecommerce/screens/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class CheckoutCard extends StatefulWidget {
   double sum = 0.0;
@@ -86,7 +88,34 @@ class _CheckoutCardState extends State<CheckoutCard> {
                   width: getProportionateScreenWidth(190),
                   child: DefaultButton(
                     text: "Thanh toán",
-                    press: () {},
+                    press: () => showDialog<String>(
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                        title: const Text("Xác nhận đặt hàng"),
+                        content: const Text("Bạn sẽ xác nhận đặt hàng chứ ?"),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, 'Hủy'),
+                            child: Text('Hủy'),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Fluttertoast.showToast(
+                                msg: "Bạn đã đặt hàng thành công",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.TOP,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.green,
+                                textColor: Colors.white,
+                                fontSize: 16.0
+                              );
+                              Navigator.pushNamed(context, HomeScreen.routeName);
+                            },
+                            child: Text('Xác nhận'),
+                          ),
+                        ],
+                      )
+                  ),
                   ),
                 ),
               ],

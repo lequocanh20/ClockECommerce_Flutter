@@ -102,6 +102,23 @@ class _ProductCardState extends State<ProductCard> {
                   //     ),
                   //   ),
                   // ),
+                  InkWell(
+                    borderRadius: BorderRadius.circular(50),
+                    onTap: () {},
+                    child: Container(
+                      padding: EdgeInsets.all(getProportionateScreenWidth(8)),
+                      height: getProportionateScreenWidth(28),
+                      width: getProportionateScreenWidth(28),
+                      decoration: BoxDecoration(
+                        color: kPrimaryColor.withOpacity(0.15),
+                        shape: BoxShape.circle,
+                      ),
+                      child: SvgPicture.asset(
+                        "assets/icons/Heart Icon_2.svg",
+                        color: Color(0xFFFF4848),
+                      ),
+                    ),
+                  ),
                 ],
               )
             ],

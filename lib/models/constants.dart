@@ -24,14 +24,22 @@ const defaultDuration = Duration(milliseconds: 250);
 
 // Form Error
 final RegExp emailValidatorRegExp =
-    RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
-const String kEmailNullError = "Hãy nhập Email";
-const String kInvalidEmailError = "Nhập email hợp lệ";
-const String kPassNullError = "Hãy nhập mật khẩu";
+    RegExp(r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))\@gmail[\.]com$');
+
+final RegExp phoneValidatorRegExp =
+    RegExp(r'^(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}$');
+
+const String kEmailNullError = "Vui lòng nhập Email";
+const String kInvalidEmailError = "Vui lòng nhập Email hợp lệ";
+const String kPassNullError = "Vui lòng nhập mật khẩu";
+const String kConfirmPassNullError = "Vui lòng nhập mật khẩu xác nhận";
 const String kShortPassError = "Mật khẩu quá ngắn";
 const String kMatchPassError = "Mật khẩu không khớp";
+const String kUserNamelNullError = "Vui lòng nhập tên tài khoản";
 const String kNamelNullError = "Vui lòng nhập tên";
+const String kInvalidNamelNullError = "Vui lòng nhập tên Hợp lệ";
 const String kPhoneNumberNullError = "Vui lòng nhập số điện thoại";
+const String kInvalidPhoneNumberNullError = "Số điện thoại có 10 số. Vui lòng nhập số điện thoại hợp lệ";
 const String kAddressNullError = "Vui lòng nhập địa chỉ";
 
 final otpInputDecoration = InputDecoration(

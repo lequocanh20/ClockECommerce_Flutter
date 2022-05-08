@@ -25,7 +25,7 @@ class _ProductImagesState extends State<ProductImages> {
     return Column(
       children: [
         SizedBox(
-          width: getProportionateScreenWidth(230),
+          width: getProportionateScreenWidth(205),
           child: AspectRatio(
             aspectRatio: 1,
             child: Hero(

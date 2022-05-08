@@ -23,9 +23,9 @@ class Body extends StatelessWidget {
                   "Nhập thông tin cá nhân của bạn hoặc \ntiếp tục với các trang mạng xã hội khác",
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: SizeConfig.screenHeight! * 0.08),
+                SizedBox(height: SizeConfig.screenHeight! * 0.04),
                 SignUpForm(),
-                SizedBox(height: SizeConfig.screenHeight! * 0.08),                
+                SizedBox(height: SizeConfig.screenHeight! * 0.04),                
                 Text(
                   'Để tiếp tục bạn cần đồng ý \nvới các điều khoản của chúng tôi',
                   textAlign: TextAlign.center,

@@ -31,7 +31,7 @@ class _AddProductToCartState extends State<AddProductToCart> {
               Fluttertoast.showToast(
                 msg: "Số lượng không thể bằng 0",
                 toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.BOTTOM,
+                gravity: ToastGravity.TOP,
                 timeInSecForIosWeb: 1,
                 backgroundColor: Colors.red,
                 textColor: Colors.white,
@@ -44,9 +44,9 @@ class _AddProductToCartState extends State<AddProductToCart> {
                 Fluttertoast.showToast(
                     msg: "Add to cart",
                     toastLength: Toast.LENGTH_SHORT,
-                    gravity: ToastGravity.BOTTOM,
+                    gravity: ToastGravity.TOP,
                     timeInSecForIosWeb: 1,
-                    backgroundColor: Colors.red,
+                    backgroundColor: Colors.green,
                     textColor: Colors.white,
                     fontSize: 16.0
                 );

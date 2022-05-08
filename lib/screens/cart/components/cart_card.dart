@@ -1,4 +1,5 @@
 import 'package:clockecommerce/models/carts.dart';
+import 'package:clockecommerce/models/config.dart';
 import 'package:clockecommerce/models/constants.dart';
 import 'package:clockecommerce/models/items.dart';
 import 'package:clockecommerce/models/size_config.dart';
@@ -30,7 +31,7 @@ class _CartCardState extends State<CartCard> {
                 color: Color(0xFFF5F6F9),
                 borderRadius: BorderRadius.circular(15),
               ),
-              child: Image.asset(widget.items.products!.productImage!),
+              child: Image.network(Uri.https(Config.apiURL, widget.items.products!.productImage!).toString()),
             ),
           ),
         ),

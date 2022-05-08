@@ -1,5 +1,6 @@
 import 'package:clockecommerce/models/constants.dart';
 import 'package:clockecommerce/models/size_config.dart';
+import 'package:clockecommerce/screens/favorite/favorite_screen.dart';
 import 'package:clockecommerce/screens/home/components/home_fragment.dart';
 import 'package:clockecommerce/screens/profile/profile_screen.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +24,7 @@ class _BodyState extends State<Body> {
   Widget build(BuildContext context) {
     List<Widget> screen = [
       HomeDetail(),
+      FavoriteScreen(),
       ProfileScreen()
     ];
     return Scaffold(
@@ -46,19 +48,19 @@ class _BodyState extends State<Body> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
+            icon: SvgPicture.asset("assets/icons/Heart Icon.svg"),
+            activeIcon: SvgPicture.asset("assets/icons/Heart Icon.svg",
+            color: kPrimaryColor),
+            label: 'Favorite',
+          ),   
+          BottomNavigationBarItem(
             icon: SvgPicture.asset(
                   "assets/icons/User Icon.svg"),
             activeIcon: SvgPicture.asset(
                   "assets/icons/User Icon.svg",
                   color: kPrimaryColor),
             label: 'Account',
-          ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset("assets/icons/Heart Icon.svg"),
-            activeIcon: SvgPicture.asset("assets/icons/Heart Icon.svg",
-            color: kPrimaryColor),
-            label: 'Favorite',
-          ),   
+          ),          
           BottomNavigationBarItem(
             icon: SvgPicture.asset("assets/icons/Chat bubble Icon.svg"),
             activeIcon: SvgPicture.asset("assets/icons/Chat bubble Icon.svg",

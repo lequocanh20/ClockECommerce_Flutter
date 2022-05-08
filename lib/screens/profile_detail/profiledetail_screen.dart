@@ -5,14 +5,13 @@ import 'package:flutter/material.dart';
 
 import 'components/body.dart';
 
-class ProfileScreen extends StatelessWidget {
-  static String routeName = "/profile";
+class ProfileDetailScreen extends StatelessWidget {
+  static String routeName = "/profile_detail";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Quản lý tài khoản", style: TextStyle(color: Colors.black)),
-        automaticallyImplyLeading: false,
+        title: Text("Thông tin cá nhân", style: TextStyle(color: Colors.black)),
         backgroundColor: kPrimaryColor,
       ),
       body: Body(),

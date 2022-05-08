@@ -24,9 +24,34 @@ class ProductDescription extends StatelessWidget {
         Padding(
           padding:
               EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
-          child: Text(
-            product.name,
-            style: Theme.of(context).textTheme.headline6,
+          child: Row(
+            children: [
+              Flexible(child: Text(
+                product.name,
+                style: Theme.of(context).textTheme.headline6,
+              )),
+              Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
+                  decoration: BoxDecoration(
+                    color: kPrimaryColor,
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  child: Row(
+                    children: [
+                      Text(
+                        product.rating.toString(),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      const SizedBox(width: 5),
+                      SvgPicture.asset("assets/icons/Star Icon.svg"),
+                    ],
+                  ),
+                )
+            ],
           ),
         ),
         // Align(

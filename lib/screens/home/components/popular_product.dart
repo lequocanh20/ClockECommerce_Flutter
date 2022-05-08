@@ -1,6 +1,7 @@
 import 'package:clockecommerce/components/product_card.dart';
 import 'package:clockecommerce/models/products.dart';
 import 'package:clockecommerce/models/size_config.dart';
+import 'package:clockecommerce/screens/product/product_screen.dart';
 import 'package:clockecommerce/services/state_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -22,7 +23,9 @@ class _PopularProductsState extends State<PopularProducts> {
         Padding(
           padding:
               EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
-          child: SectionTitle(title: "Sản phẩm mới nhất", press: () {}),
+          child: SectionTitle(title: "Sản phẩm mới nhất", press: () {
+            Navigator.pushNamed(context, ProductScreen.routeName);
+          }),
         ),
         SizedBox(height: getProportionateScreenWidth(20)),
         GetBodyFeaturedProduct(),

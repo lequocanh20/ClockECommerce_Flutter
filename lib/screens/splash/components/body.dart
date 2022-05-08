@@ -21,7 +21,7 @@ class _BodyState extends State<Body> {
     },
     {
       "text":
-          "chúng tôi sẽ đồng hành cùng bạn \ntrong quá trình mua sắm",
+          "Chúng tôi sẽ đồng hành cùng bạn \ntrong quá trình mua sắm",
       "image": "assets/images/splash_2.png"
     },
     {

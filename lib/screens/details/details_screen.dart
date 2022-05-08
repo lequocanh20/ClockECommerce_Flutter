@@ -1,3 +1,4 @@
+import 'package:clockecommerce/models/constants.dart';
 import 'package:clockecommerce/models/product_detail.dart';
 import 'package:clockecommerce/models/products.dart';
 import 'package:clockecommerce/models/size_config.dart';
@@ -13,7 +14,6 @@ class DetailsScreen extends StatelessWidget {
     final ProductDetailsArguments agrs =
         ModalRoute.of(context)!.settings.arguments as ProductDetailsArguments;
     return Scaffold(
-      backgroundColor: Color(0xFFF5F6F9),
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(AppBar().preferredSize.height),
         child: SafeArea(
@@ -38,27 +38,27 @@ class DetailsScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                Spacer(),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(14),
-                  ),
-                  child: Row(
-                    children: [
-                      Text(
-                        agrs.product.rating.toString(),
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      const SizedBox(width: 5),
-                      SvgPicture.asset("assets/icons/Star Icon.svg"),
-                    ],
-                  ),
-                )
+                // Spacer(),
+                // Container(
+                //   padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
+                //   decoration: BoxDecoration(
+                //     color: Colors.white,
+                //     borderRadius: BorderRadius.circular(14),
+                //   ),
+                //   child: Row(
+                //     children: [
+                //       Text(
+                //         agrs.product.rating.toString(),
+                //         style: const TextStyle(
+                //           fontSize: 14,
+                //           fontWeight: FontWeight.w600,
+                //         ),
+                //       ),
+                //       const SizedBox(width: 5),
+                //       SvgPicture.asset("assets/icons/Star Icon.svg"),
+                //     ],
+                //   ),
+                // )
               ],
             ),
           ),
