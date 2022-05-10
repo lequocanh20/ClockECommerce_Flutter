@@ -62,7 +62,7 @@ class _BodyState extends State<Body> {
                 },
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                 color: kPrimaryColor,
-                child: const Text("Save", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),),),
+                child: const Text("Lưu", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),),),
             ),
           ],
         ),

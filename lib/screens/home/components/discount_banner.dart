@@ -1,5 +1,7 @@
+import 'package:clockecommerce/models/constants.dart';
 import 'package:clockecommerce/models/size_config.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 
 class DiscountBanner extends StatelessWidget {
   const DiscountBanner({
@@ -9,32 +11,32 @@ class DiscountBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // height: 90,
-      width: double.infinity,
-      margin: EdgeInsets.all(getProportionateScreenWidth(20)),
-      padding: EdgeInsets.symmetric(
-        horizontal: getProportionateScreenWidth(20),
-        vertical: getProportionateScreenWidth(15),
-      ),
-      decoration: BoxDecoration(
-        color: Color(0xFF4A3298),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Text.rich(
-        TextSpan(
-          style: TextStyle(color: Colors.white),
+      child: ImageSlideshow(
+          width: double.infinity,
+          height: 200,
+          initialPage: 0,
+          indicatorColor: kPrimaryColor,
+          indicatorBackgroundColor: Colors.grey,
+          onPageChanged: (value) {
+            debugPrint('Page changed: $value');
+          },
+          autoPlayInterval: 3000,
+          isLoop: true,
           children: [
-            TextSpan(text: "Khuyến mãi\n"),
-            TextSpan(
-              text: "Giảm giá 20%",
-              style: TextStyle(
-                fontSize: getProportionateScreenWidth(24),
-                fontWeight: FontWeight.bold,
-              ),
+            Image.asset(
+              'assets/images/Image Banner 2.png',
+              fit: BoxFit.cover,
+            ),
+            Image.asset(
+              'assets/images/Image Banner 3.png',
+              fit: BoxFit.cover,
+            ),
+            Image.asset(
+              'assets/images/Image Popular Product 1.png',
+              fit: BoxFit.cover,
             ),
           ],
-        ),
-      ),
+      )
     );
   }
 }

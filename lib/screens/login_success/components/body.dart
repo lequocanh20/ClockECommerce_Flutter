@@ -28,7 +28,7 @@ class Body extends StatelessWidget {
           child: DefaultButton(
             text: "Về trang chủ",
             press: () {
-              Navigator.pushNamed(context, HomeScreen.routeName);
+              Navigator.pushNamedAndRemoveUntil(context, HomeScreen.routeName, (route) => false);
             },
           ),
         ),

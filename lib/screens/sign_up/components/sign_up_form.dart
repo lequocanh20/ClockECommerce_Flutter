@@ -95,7 +95,7 @@ class _SignUpFormState extends State<SignUpForm> {
                       FormHelper.showSimpleAlertDialog(
                         context, 
                         Config.appName, 
-                        "Đăng ký thành công. Hãy đăng nhập tài khoản để sử dụng.", 
+                        "Đăng ký thành công. Vui lòng xác thực email trước khi đăng nhập.", 
                         "OK", 
                         () {
                           Navigator.pushNamedAndRemoveUntil(

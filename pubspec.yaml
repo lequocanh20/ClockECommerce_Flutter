@@ -42,6 +42,7 @@ dependencies:
   flutter_riverpod: any
   intl: ^0.17.0
   flutter_tags: "^0.4.9+1"
+  flutter_image_slideshow: any
 
 dev_dependencies:
   flutter_test:
