@@ -14,3 +14,7 @@ final categoryStateFuture = FutureProvider<List<Categories>?>((ref) async {
 final productFeaturedStateFuture = FutureProvider<List<Products>?>((ref) async {
   return APIService.getFeaturedProduct();
 });
+
+final productFavoriteStateFuture = FutureProvider<List<Products>?>((ref) async {
+  return APIService.getAllFavoriteProduct();
+});

@@ -1,4 +1,5 @@
 import 'package:clockecommerce/models/config.dart';
+import 'package:clockecommerce/models/constants.dart';
 import 'package:clockecommerce/models/products.dart';
 import 'package:clockecommerce/models/size_config.dart';
 import 'package:clockecommerce/models/utilities.dart';
@@ -16,23 +17,37 @@ class ProductList extends StatefulWidget {
 }
 
 class _ProductListState extends State<ProductList> {
+  late Future<List<Products>?> _future;
+  @override
+  void initState() {
+    super.initState();
+    _future = APIService.getAllProduct();
+  } 
+
+  Future<void> _pullRefresh() async {
+    List<Products>? freshFutureProducts = await APIService.getAllProduct();
+    await Future.delayed(const Duration(seconds: 1));
+    setState(() {
+      _future = Future.value(freshFutureProducts);   
+    });
+  } 
+
+
   @override
   Widget build(BuildContext context) {
-    return getBuildListView();
-  }
-}
-
-class getBuildListView extends ConsumerWidget {
-  getBuildListView({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    AsyncValue<List<Products>?> products = ref.watch(productStateFuture);
-    return products.when(
-      loading: () => Center(child: CircularProgressIndicator()),
-      error: (err, stack) => Center(child: Text('${err.toString()}')),
-      data: (products) {
-        return buildGridView(products!.toList());
+    return FutureBuilder<List<Products>?>(
+      future: _future,
+      builder: (context, snapshot){
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        else if (snapshot.hasError) {
+          return Center(child: Text('${snapshot.error}'));
+        }
+        return RefreshIndicator(
+          child: buildGridView(snapshot.data!.toList()), 
+          onRefresh: _pullRefresh
+        );
       }
     );
   }
@@ -42,7 +57,7 @@ class getBuildListView extends ConsumerWidget {
       padding: EdgeInsets.all(5),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(      
         crossAxisCount: 2,
-        childAspectRatio: 0.7,
+        childAspectRatio: 0.65,
         crossAxisSpacing: 6,
         mainAxisSpacing: 6
       ),
@@ -61,12 +76,12 @@ class getBuildListView extends ConsumerWidget {
                 Image.network(Uri.https(Config.apiURL, data[index].productImage!).toString()),
                 Row(
                   children: [
-                    Expanded(child: Text(data[index].name.length > 28 ? data[index].name.substring(0, 34) + "..." : data[index].name, style: const TextStyle(fontSize: 15), maxLines: 2)),
+                    Expanded(child: Text(data[index].name, style: const TextStyle(fontSize: textSizeList, color: Colors.black), maxLines: 2, overflow: TextOverflow.ellipsis)),
                   ],
                 ),  
                 Row(
                   children: [
-                    Expanded(child: Text(Utilities.formatCurrency(data[index].price), style: const TextStyle(fontSize: 15))),
+                    Expanded(child: Text(Utilities.formatCurrency(data[index].price), style: const TextStyle(fontSize: textSizeCost, color: textColorCost))),
                   ],
                 ),   
               ],      
@@ -80,3 +95,62 @@ class getBuildListView extends ConsumerWidget {
     );
   }
 }
+
+// class getBuildListView extends ConsumerWidget {
+//   getBuildListView({Key? key}) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context, WidgetRef ref) {
+//     AsyncValue<List<Products>?> products = ref.watch(productStateFuture);
+//     return products.when(
+//       loading: () => Center(child: CircularProgressIndicator()),
+//       error: (err, stack) => Center(child: Text('${err.toString()}')),
+//       data: (products) {
+//         return buildGridView(products!.toList());
+//       }
+//     );
+//   }
+
+//   GridView buildGridView(List<Products> data) {
+//     return GridView.builder( 
+//       padding: EdgeInsets.all(5),
+//       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(      
+//         crossAxisCount: 2,
+//         childAspectRatio: 0.65,
+//         crossAxisSpacing: 6,
+//         mainAxisSpacing: 6
+//       ),
+//       itemCount: data.length,
+//       itemBuilder: (context, index){
+//         return Container(
+//           child: GestureDetector(
+//             onTap: () async {
+//               var productDetail = await APIService.getProductById(data[index].id);
+//               Navigator.pushNamed(context, DetailsScreen.routeName, arguments: ProductDetailsArguments(product: productDetail));
+//             },
+//             child: Column(
+//               crossAxisAlignment: CrossAxisAlignment.start,
+//               children: [
+//                 SizedBox(height: getProportionateScreenWidth(10)),
+//                 Image.network(Uri.https(Config.apiURL, data[index].productImage!).toString()),
+//                 Row(
+//                   children: [
+//                     Expanded(child: Text(data[index].name, style: const TextStyle(fontSize: textSizeList, color: Colors.black), maxLines: 2, overflow: TextOverflow.ellipsis)),
+//                   ],
+//                 ),  
+//                 Row(
+//                   children: [
+//                     Expanded(child: Text(Utilities.formatCurrency(data[index].price), style: const TextStyle(fontSize: textSizeCost, color: textColorCost))),
+//                   ],
+//                 ),   
+//               ],      
+//             ),
+//           ),
+//           decoration: const BoxDecoration(
+//             color: Colors.white,
+//           ),
+//         );
+//       },
+//     );
+//   }
+// }

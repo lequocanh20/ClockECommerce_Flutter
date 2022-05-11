@@ -11,7 +11,9 @@ class SearchField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.pushNamed(context, SearchScreen.routeName),
+      onTap: () {
+        Navigator.pushNamed(context, SearchScreen.routeName);
+      },
       child: Container(
         width: SizeConfig.screenWidth! * 0.6,
         height: 50,

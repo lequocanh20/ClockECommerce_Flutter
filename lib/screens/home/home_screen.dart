@@ -1,5 +1,3 @@
-import 'package:clockecommerce/components/custom_bottom_nav_bar.dart';
-import 'package:clockecommerce/models/enums.dart';
 import 'package:clockecommerce/models/size_config.dart';
 import 'package:clockecommerce/screens/home/components/body.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +11,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
   int selectIndex = 0;
   @override
   Widget build(BuildContext context) {

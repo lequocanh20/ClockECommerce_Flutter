@@ -24,32 +24,34 @@ class _CartCardState extends State<CartCard> {
         SizedBox(
           width: 88,
           child: AspectRatio(
-            aspectRatio: 0.88,
+            aspectRatio: 1.02,
             child: Container(
-              padding: EdgeInsets.all(getProportionateScreenWidth(10)),
+              padding: EdgeInsets.all(getProportionateScreenWidth(5)),
               decoration: BoxDecoration(
-                color: Color(0xFFF5F6F9),
-                borderRadius: BorderRadius.circular(15),
+                color: kSecondaryColor.withOpacity(0.1),
               ),
-              child: Image.network(Uri.https(Config.apiURL, widget.items.products!.productImage!).toString()),
+              child: Hero(
+                tag: widget.items.products!.id.toString(),
+                child: Image.network(Uri.https(Config.apiURL, widget.items.products!.productImage!).toString()),
+              ),
             ),
           ),
         ),
-        SizedBox(width: 20),
+        const SizedBox(width: 20),
         Expanded(
           child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
               Text(
                 widget.items.products!.name,
-                style: TextStyle(color: Colors.black, fontSize: 16),
+                style: const TextStyle(color: textColorList, fontSize: textSizeList),
                 maxLines: 2,
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Text.rich(
                 TextSpan(
                   text: Utilities.formatCurrency(widget.items.products!.price),
-                  style: TextStyle(
+                  style: const TextStyle(
                       fontWeight: FontWeight.w600, color: kPrimaryColor),
                   children: [
                     TextSpan(

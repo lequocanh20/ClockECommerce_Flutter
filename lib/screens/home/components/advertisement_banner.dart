@@ -1,5 +1,4 @@
 import 'package:clockecommerce/models/constants.dart';
-import 'package:clockecommerce/models/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 
@@ -18,7 +17,6 @@ class DiscountBanner extends StatelessWidget {
           indicatorColor: kPrimaryColor,
           indicatorBackgroundColor: Colors.grey,
           onPageChanged: (value) {
-            debugPrint('Page changed: $value');
           },
           autoPlayInterval: 3000,
           isLoop: true,

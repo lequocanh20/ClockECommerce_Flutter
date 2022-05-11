@@ -42,7 +42,7 @@ class _AddProductToCartState extends State<AddProductToCart> {
                 cart.addProductToCart(widget.items);
                 print(cart.getCart().length.toString());
                 Fluttertoast.showToast(
-                    msg: "Add to cart",
+                    msg: "Đã thêm vào giỏ",
                     toastLength: Toast.LENGTH_SHORT,
                     gravity: ToastGravity.TOP,
                     timeInSecForIosWeb: 1,

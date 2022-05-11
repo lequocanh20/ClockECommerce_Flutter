@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:clockecommerce/models/categories.dart';
 import 'package:clockecommerce/models/config.dart';
+import 'package:clockecommerce/models/favorite_request_model.dart';
+import 'package:clockecommerce/models/favorite_response_model.dart';
 import 'package:clockecommerce/models/login_request_model.dart';
 import 'package:clockecommerce/models/login_response_model.dart';
 import 'package:clockecommerce/models/product_detail.dart';
@@ -204,5 +206,63 @@ class APIService {
     else {
       throw Exception("Failed to load cate api");
     }
+  }
+
+  static Future<List<Products>?> getAllFavoriteProduct() async {
+    var loginDetails = await SharedService.loginDetails();
+
+    Map<String, String> requestHeaders = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${loginDetails!.resultObj}'
+    };
+
+    var url = Uri.https(Config.apiURL, Config.productFavorite + loginDetails.resultObj!);
+
+    var response = await client.get(
+      url, 
+      headers: requestHeaders,
+    );
+    if (response.statusCode == 200) {
+      return productsFromJson(response.body);
+    }
+    else {
+      throw Exception("Failed to load cate api");
+    }
+  }
+
+  static Future<FavoriteResponseModel> AddFavorite(FavoriteRequestModel model) async {
+    var loginDetails = await SharedService.loginDetails();
+    Map<String, String> requestHeaders = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${loginDetails!.resultObj}'
+    };
+
+    var url = Uri.https(Config.apiURL, Config.addFavorite);
+
+    var response = await client.post(
+      url,
+      headers: requestHeaders,
+      body: jsonEncode(model.toJson()),
+    );
+
+    return favoriteResponseModelFromJson(response.body);
+  }
+
+  static Future<FavoriteResponseModel> DeleteFavorite(FavoriteRequestModel model) async {
+    var loginDetails = await SharedService.loginDetails();
+    Map<String, String> requestHeaders = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${loginDetails!.resultObj}'
+    };
+
+    var url = Uri.https(Config.apiURL, Config.deleteFavorite);
+
+    var response = await client.post(
+      url,
+      headers: requestHeaders,
+      body: jsonEncode(model.toJson()),
+    );
+
+    return favoriteResponseModelFromJson(response.body);
   }
 }

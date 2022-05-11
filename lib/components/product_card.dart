@@ -1,11 +1,13 @@
 import 'package:clockecommerce/models/config.dart';
 import 'package:clockecommerce/models/constants.dart';
+import 'package:clockecommerce/models/favorite_request_model.dart';
 import 'package:clockecommerce/models/product_detail.dart';
 import 'package:clockecommerce/models/products.dart';
 import 'package:clockecommerce/models/size_config.dart';
 import 'package:clockecommerce/models/utilities.dart';
 import 'package:clockecommerce/screens/details/details_screen.dart';
 import 'package:clockecommerce/services/api_service.dart';
+import 'package:clockecommerce/services/shared_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
@@ -28,6 +30,10 @@ class ProductCard extends StatefulWidget {
 
 class _ProductCardState extends State<ProductCard> {
   var productDetail;
+  List<Products>? listProductFavorite = [];
+
+
+  @override
   void initState() {
     super.initState();
     fetchData();
@@ -35,8 +41,10 @@ class _ProductCardState extends State<ProductCard> {
 
   fetchData() async {
     var item = await APIService.getProductById(widget.product!.id);
+    var productFavorite = await APIService.getAllFavoriteProduct();
     setState(() {
       productDetail = item;
+      listProductFavorite = productFavorite;
     });
   }
   @override
@@ -66,9 +74,10 @@ class _ProductCardState extends State<ProductCard> {
               ),
               const SizedBox(height: 10),
               Text(
-                widget.product!.name.length > 15 ? widget.product!.name.substring(0, 28) + "..." : widget.product!.name,
-                style: TextStyle(color: Colors.black, fontSize: 14, fontWeight: FontWeight.bold),
+                widget.product!.name,
+                style: const TextStyle(color: textColorList, fontSize: textSizeList),
                 maxLines: 2,
+                overflow: TextOverflow.ellipsis,
               ),            
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -76,9 +85,9 @@ class _ProductCardState extends State<ProductCard> {
                   Text(
                     Utilities.formatCurrency(widget.product!.price),
                     style: TextStyle(
-                      fontSize: getProportionateScreenWidth(15),
+                      fontSize: getProportionateScreenWidth(textSizeCost),
                       fontWeight: FontWeight.w500,
-                      color: kPrimaryColor,
+                      color: textColorCost,
                     ),
                   ),
                   // InkWell(
@@ -102,23 +111,46 @@ class _ProductCardState extends State<ProductCard> {
                   //     ),
                   //   ),
                   // ),
-                  InkWell(
-                    borderRadius: BorderRadius.circular(50),
-                    onTap: () {},
-                    child: Container(
-                      padding: EdgeInsets.all(getProportionateScreenWidth(8)),
-                      height: getProportionateScreenWidth(28),
-                      width: getProportionateScreenWidth(28),
-                      decoration: BoxDecoration(
-                        color: kPrimaryColor.withOpacity(0.15),
-                        shape: BoxShape.circle,
-                      ),
-                      child: SvgPicture.asset(
-                        "assets/icons/Heart Icon_2.svg",
-                        color: Color(0xFFFF4848),
-                      ),
-                    ),
-                  ),
+                  // InkWell(
+                  //   borderRadius: BorderRadius.circular(50),
+                  //   onTap: () async {
+                  //     var loginDetails = await SharedService.loginDetails();
+                  //     FavoriteRequestModel model = FavoriteRequestModel(
+                  //       token: loginDetails!.resultObj!,
+                  //       productId: widget.product!.id
+                  //     );                    
+                  //     listProductFavorite!.any((element) => element.id == widget.product!.id) ? APIService.DeleteFavorite(model).then((response) async {
+                  //       if (response.isSuccessed == true) {
+                  //         APIService.getAllFavoriteProduct().then((response) async {
+                  //           setState(() {
+                  //             listProductFavorite = response;
+                  //           });
+                  //         });
+                  //       }
+                  //       }) : APIService.AddFavorite(model).then((response) async {
+                  //       if (response.isSuccessed == true) {
+                  //         APIService.getAllFavoriteProduct().then((response) async {
+                  //           setState(() {
+                  //             listProductFavorite = response;
+                  //           });
+                  //         });
+                  //       }
+                  //     });
+                  //   },
+                  //   child: Container(
+                  //     padding: EdgeInsets.all(getProportionateScreenWidth(8)),
+                  //     height: getProportionateScreenWidth(28),
+                  //     width: getProportionateScreenWidth(28),
+                  //     decoration: BoxDecoration(
+                  //       color: kPrimaryColor.withOpacity(0.15),
+                  //       shape: BoxShape.circle,
+                  //     ),
+                  //     child: SvgPicture.asset(
+                  //       "assets/icons/Heart Icon_2.svg",
+                  //       color: listProductFavorite!.any((element) => element.id == widget.product!.id) ? Color(0xFFFF4848) : Color(0xFFDBDEE4),
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               )
             ],

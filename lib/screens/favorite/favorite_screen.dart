@@ -1,4 +1,6 @@
+import 'package:clockecommerce/models/constants.dart';
 import 'package:clockecommerce/screens/favorite/components/body.dart';
+import 'package:clockecommerce/screens/home/home_screen.dart';
 import 'package:flutter/material.dart';
 
 class FavoriteScreen extends StatefulWidget {
@@ -11,6 +13,18 @@ class FavoriteScreen extends StatefulWidget {
 class _FavoriteScreenState extends State<FavoriteScreen> {
   @override
   Widget build(BuildContext context) {
-    return Body();
+    return Scaffold(
+      appBar: AppBar(
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.pushReplacementNamed(context, HomeScreen.routeName);
+          },
+          child: const Icon(Icons.arrow_back_ios),
+        ),
+        title: Text("Lượt thích", style: TextStyle(color: Colors.black)),
+        backgroundColor: kPrimaryColor,
+      ),
+      body: Body(),
+      backgroundColor: Color(0xFFF5F6F9));
   }
 }

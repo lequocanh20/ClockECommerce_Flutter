@@ -2,6 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:clockecommerce/models/size_config.dart';
 
 const kPrimaryColor = Color(0xFFFF7643);
+const double textSizeList = 12;
+const textColorList = Colors.black;
+
+const double textSizeCost = 14;
+const textColorCost = Colors.red;
+
 const kPrimaryLightColor = Color(0xFFFFECDF);
 const kPrimaryGradientColor = LinearGradient(
   begin: Alignment.topLeft,

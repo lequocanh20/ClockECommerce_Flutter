@@ -5,11 +5,16 @@ import 'package:flutter/material.dart';
 import 'icon_btn_with_counter.dart';
 import 'search_field.dart';
 
-class HomeHeader extends StatelessWidget {
+class HomeHeader extends StatefulWidget {
   const HomeHeader({
     Key? key,
   }) : super(key: key);
 
+  @override
+  State<HomeHeader> createState() => _HomeHeaderState();
+}
+
+class _HomeHeaderState extends State<HomeHeader> {
   @override
   Widget build(BuildContext context) {
     return Padding(

@@ -2,8 +2,8 @@ import 'package:clockecommerce/models/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class CustomSurffixIcon extends StatelessWidget {
-  const CustomSurffixIcon({
+class CustomSuffixIcon extends StatelessWidget {
+  const CustomSuffixIcon({
     Key? key,
     required this.svgIcon,
   }) : super(key: key);
