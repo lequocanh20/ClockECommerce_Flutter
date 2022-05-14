@@ -5,6 +5,7 @@ import 'package:clockecommerce/models/size_config.dart';
 import 'package:clockecommerce/models/utilities.dart';
 import 'package:clockecommerce/screens/details/details_screen.dart';
 import 'package:clockecommerce/services/api_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class ProductList extends StatefulWidget {
@@ -15,26 +16,13 @@ class ProductList extends StatefulWidget {
 }
 
 class _ProductListState extends State<ProductList> {
-  late Future<List<Products>?> _future;
-  @override
-  void initState() {
-    super.initState();
-    _future = APIService.getAllProduct();
-  } 
-
-  Future<void> _pullRefresh() async {
-    List<Products>? freshFutureProducts = await APIService.getAllProduct();
-    await Future.delayed(const Duration(seconds: 1));
-    setState(() {
-      _future = Future.value(freshFutureProducts);   
-    });
-  } 
-
-
+  final Stream<QuerySnapshot> _productStream = 
+    FirebaseFirestore.instance.collection('Products').snapshots();
+  CollectionReference products = FirebaseFirestore.instance.collection('Products');
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Products>?>(
-      future: _future,
+    return StreamBuilder<QuerySnapshot>(
+      stream: _productStream,
       builder: (context, snapshot){
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
@@ -42,10 +30,12 @@ class _ProductListState extends State<ProductList> {
         else if (snapshot.hasError) {
           return Center(child: Text('${snapshot.error}'));
         }
-        return RefreshIndicator(
-          child: buildGridView(snapshot.data!.toList()), 
-          onRefresh: _pullRefresh
-        );
+        final List<Products> storedocs = [];
+          snapshot.data!.docs.map((DocumentSnapshot document) {
+            Map a = document.data() as Map<String, dynamic>;
+            storedocs.add(Products(id: (a['Id'] as int).toInt(), name: a['Name'], price: (a['Price'] as int).toDouble(), originPrice: (a['OriginPrice'] as int).toDouble(), stock: (a['Stock'] as int).toInt(), dateCreated: (a['DateCreated'] as Timestamp).toDate(), categoryId: a['CategoryId'], description: a['Description'], productImage: a['ProductImage']));
+          });
+        return buildGridView(storedocs.toList());
       }
     );
   }

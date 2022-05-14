@@ -26,7 +26,7 @@ class Products {
     int id;
     double originPrice;
     double price;
-    int categoryId;
+    String categoryId;
     int stock;
     DateTime dateCreated;
     String name;

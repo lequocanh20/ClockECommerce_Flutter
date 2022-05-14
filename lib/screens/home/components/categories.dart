@@ -4,6 +4,7 @@ import 'package:clockecommerce/models/constants.dart';
 import 'package:clockecommerce/models/size_config.dart';
 import 'package:clockecommerce/screens/category/category_screen.dart';
 import 'package:clockecommerce/services/api_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -15,12 +16,15 @@ class Category extends StatefulWidget {
 }
 
 class _CategoryState extends State<Category> {
-  late Future<List<Categories>?> _future;
-  @override
-  void initState() {
-    super.initState();
-    _future = APIService.getAllCategory();
-  }
+  final Stream<QuerySnapshot> _categoryStream = 
+    FirebaseFirestore.instance.collection('Categories').snapshots();
+  CollectionReference categories = FirebaseFirestore.instance.collection('Categories');
+  // late Future<List<Categories>?> _future;
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   // _future = APIService.getAllCategory();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -33,32 +37,38 @@ class _CategoryState extends State<Category> {
     // ];
     return Padding(
       padding: EdgeInsets.all(getProportionateScreenWidth(20)),
-      child: FutureBuilder<List<Categories>?>(
-        future: _future,
-        builder: (context, snapshot) {
+      child: StreamBuilder<QuerySnapshot>(
+        stream: _categoryStream,
+        builder: ((BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           }
           else if (snapshot.hasError) {
             return Center(child: Text('${snapshot.error}'));
           }
+          final List<Categories> storedocs = [];
+          snapshot.data!.docs.map((DocumentSnapshot document) {
+            Map a = document.data() as Map<String, dynamic>;         
+            storedocs.add(Categories(id: a['Id'], name: a['Name'], imageCate: a['ImageCate']));
+          });
           return Container(
           width: MediaQuery.of(context).size.width,
           height: 100,
           child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount:snapshot.data!.length,
+              itemCount: storedocs.length,
               itemBuilder: (context, index){
                 return CategoryCard(
-                  image: snapshot.data![index].imageCate,
+                  image: storedocs[index].imageCate,
                   press: () {
-                    Navigator.pushNamed(context, CategoryScreen.routeName, arguments: snapshot.data![index]);
+                    Navigator.pushNamed(context, CategoryScreen.routeName, arguments: storedocs[index]);
                   },
                 );
               },
           ),
         );
         }),
+      )
     );
   }
 }
@@ -97,7 +107,7 @@ class _CategoryCardState extends State<CategoryCard> {
                 color: kSecondaryColor.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(0),
               ),
-              child: Image.network(Uri.https(Config.apiURL, widget.image!).toString()),
+              child: Image.network(widget.image!),
             ),
             SizedBox(height: 5),
             // Text(text, textAlign: TextAlign.center)

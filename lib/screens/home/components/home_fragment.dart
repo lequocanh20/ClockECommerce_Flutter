@@ -24,36 +24,24 @@ class _HomeDetailState extends State<HomeDetail> {
     future = APIService.getFeaturedProduct();
   }
 
-  Future<void> _pullRefresh() async {
-    List<Products>? freshFutureFeaturedProducts = await APIService.getFeaturedProduct();
-    await Future.delayed(const Duration(seconds: 1));
-    setState(() {
-      future = Future.value(freshFutureFeaturedProducts);   
-    });
-  }
-
-
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
-      child: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(height: getProportionateScreenHeight(10)),
-              HomeHeader(),
-              SizedBox(height: getProportionateScreenWidth(10)),
-              DiscountBanner(),
-              Category(),
-              SpecialOffers(),
-              SizedBox(height: getProportionateScreenWidth(30)),
-              LatestProducts(future: future),
-              SizedBox(height: getProportionateScreenWidth(30)),
-            ],
-          ),
+    return SafeArea(
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(height: getProportionateScreenHeight(10)),
+            HomeHeader(),
+            SizedBox(height: getProportionateScreenWidth(10)),
+            DiscountBanner(),
+            Category(),
+            SpecialOffers(),
+            SizedBox(height: getProportionateScreenWidth(30)),
+            LatestProducts(),
+            SizedBox(height: getProportionateScreenWidth(30)),
+          ],
         ),
-      ), 
-      onRefresh: _pullRefresh
+      ),
     );
   }
 }

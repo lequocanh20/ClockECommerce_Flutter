@@ -8,6 +8,7 @@ import 'package:clockecommerce/models/login_request_model.dart';
 import 'package:clockecommerce/models/size_config.dart';
 import 'package:clockecommerce/screens/login_success/login_success_screen.dart';
 import 'package:clockecommerce/services/api_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:snippet_coder_utils/FormHelper.dart';
@@ -94,35 +95,61 @@ class _SignFormState extends State<SignForm> {
                       setState(() {
                         isAPIcallProcess = true;
                       });
-                      LoginRequestModel model = LoginRequestModel(
-                        username: email.text, 
-                        password: password.text);                  
-                      APIService.login(model).then((response) async {                   
+                      // LoginRequestModel model = LoginRequestModel(
+                      //   username: email.text, 
+                      //   password: password.text);                  
+                      // APIService.login(model).then((response) async {                   
+                      //   setState(() {
+                      //     isAPIcallProcess = false;
+                      //   });
+                      //   if (response.resultObj != null) {
+                      //     KeyboardUtil.hideKeyboard(context);
+                      //     Navigator.pushNamedAndRemoveUntil(
+                      //     context, 
+                      //     LoginSuccessScreen.routeName, 
+                      //     (route) => false);
+                      //   }
+                      //   else {
+                      //     FormHelper.showSimpleAlertDialog(
+                      //     context, 
+                      //     Config.appName, 
+                      //     response.message!, 
+                      //     "OK", 
+                      //     () {
+                      //       KeyboardUtil.hideKeyboard(context);
+                      //       Navigator.pop(context);
+                      //     });
+                      //   }
+                      // });    
+                      FirebaseAuth.instance.signInWithEmailAndPassword(email: email.text, password: password.text).then((value) {
                         setState(() {
                           isAPIcallProcess = false;
                         });
-                        if (response.resultObj != null) {
-                          KeyboardUtil.hideKeyboard(context);
+                        FocusScopeNode currentFocus = FocusScope.of(context);
+                          if (!currentFocus.hasPrimaryFocus) {
+                            currentFocus.unfocus();
+                          }
                           Navigator.pushNamedAndRemoveUntil(
+                            context, 
+                            LoginSuccessScreen.routeName, 
+                            (route) => false
+                        );
+                      }).catchError((e) {
+                        FormHelper.showSimpleAlertDialog(
                           context, 
-                          LoginSuccessScreen.routeName, 
-                          (route) => false);
-                        }
-                        else {
-                          FormHelper.showSimpleAlertDialog(
-                          context, 
-                          Config.appName, 
-                          response.message!, 
+                          "Clock Ecommerce", 
+                          e.message, 
                           "OK", 
                           () {
-                            KeyboardUtil.hideKeyboard(context);
+                            FocusScopeNode currentFocus = FocusScope.of(context);
+                            if (!currentFocus.hasPrimaryFocus) {
+                              currentFocus.unfocus();
+                            }
                             Navigator.pop(context);
                           });
-                        }
-                      });                                                                  
+                      });                                                              
                     }
-                    // if all are valid then go to success screen
-                    
+                    // if all are valid then go to success screen                  
                   }
                 ),
               ],

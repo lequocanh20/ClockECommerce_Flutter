@@ -42,6 +42,11 @@ dependencies:
   intl: ^0.17.0
   flutter_tags: "^0.4.9+1"
   flutter_image_slideshow: any
+  firebase_auth: ^3.3.18
+  firebase_database: ^9.0.14
+  firebase_storage: ^10.2.16
+  cloud_firestore: ^3.1.15
+  firebase_core: ^1.17.0
 
 dev_dependencies:
   flutter_test:

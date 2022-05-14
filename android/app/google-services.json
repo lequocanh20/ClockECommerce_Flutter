@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1069550220771",
+    "firebase_url": "https://clock-ecommerce-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "clock-ecommerce",
+    "storage_bucket": "clock-ecommerce.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1069550220771:android:1e1a51725e407de7b71cd6",
+        "android_client_info": {
+          "package_name": "com.example.clockecommerce"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1069550220771-fkoi9mag1fil88m8ugokurm248q8vnti.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBq974ocqvXMIEkFCNWnF11-24PhdUkeoo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1069550220771-fkoi9mag1fil88m8ugokurm248q8vnti.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
