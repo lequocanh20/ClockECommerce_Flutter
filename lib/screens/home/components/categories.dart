@@ -4,9 +4,7 @@ import 'package:clockecommerce/models/constants.dart';
 import 'package:clockecommerce/models/size_config.dart';
 import 'package:clockecommerce/screens/category/category_screen.dart';
 import 'package:clockecommerce/services/api_service.dart';
-import 'package:clockecommerce/services/state_manager.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class Category extends StatefulWidget {

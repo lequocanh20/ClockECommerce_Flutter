@@ -7,9 +7,7 @@ import 'package:clockecommerce/models/utilities.dart';
 import 'package:clockecommerce/screens/details/details_screen.dart';
 import 'package:clockecommerce/screens/home/home_screen.dart';
 import 'package:clockecommerce/services/api_service.dart';
-import 'package:clockecommerce/services/state_manager.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class Body extends StatefulWidget {
   const Body({ Key? key }) : super(key: key);

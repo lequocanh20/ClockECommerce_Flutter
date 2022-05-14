@@ -5,7 +5,6 @@ import 'package:clockecommerce/screens/home/home_screen.dart';
 import 'package:clockecommerce/screens/splash/splash_screen.dart';
 import 'package:clockecommerce/services/shared_service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 Widget _defaultHome = SplashScreen();
 void main() async {
@@ -15,7 +14,7 @@ void main() async {
     _defaultHome = HomeScreen();
   }
   HttpOverrides.global = MyHttpOverrides();
-  runApp(ProviderScope(child: MyApp()));
+  runApp(MyApp());
 }
 
 

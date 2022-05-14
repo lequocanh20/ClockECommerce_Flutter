@@ -39,7 +39,6 @@ dependencies:
   fluttertoast: ^8.0.9
   api_cache_manager: ^1.0.2
   snippet_coder_utils: ^1.0.9
-  flutter_riverpod: any
   intl: ^0.17.0
   flutter_tags: "^0.4.9+1"
   flutter_image_slideshow: any
