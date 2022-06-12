@@ -12,7 +12,7 @@ class ProductImages extends StatefulWidget {
   }) : super(key: key);
 
   // final Products product;
-  final ProductDetail product;
+  final Products product;
 
   @override
   _ProductImagesState createState() => _ProductImagesState();
@@ -30,7 +30,7 @@ class _ProductImagesState extends State<ProductImages> {
             aspectRatio: 1,
             child: Hero(
               tag: widget.product.id.toString(),
-              child: Image.network(Uri.https(Config.apiURL, widget.product.productImage!).toString()),
+              child: Image.network(widget.product.productImage!),
             ),
           ),
         ),

@@ -7,6 +7,7 @@ import 'package:clockecommerce/models/utilities.dart';
 import 'package:clockecommerce/screens/details/details_screen.dart';
 import 'package:clockecommerce/screens/home/home_screen.dart';
 import 'package:clockecommerce/services/api_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class Body extends StatefulWidget {
@@ -18,12 +19,9 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> {
   TextEditingController controller = TextEditingController();
-  late Future<List<Products>?> _future;
-  @override
-  void initState() {
-    super.initState();
-    _future = APIService.getAllProduct();
-  }
+  final Stream<QuerySnapshot> _productStream = 
+    FirebaseFirestore.instance.collection('Products').snapshots();
+  CollectionReference products = FirebaseFirestore.instance.collection('Products');
 
   @override
   Widget build(BuildContext context) {
@@ -54,8 +52,8 @@ class _BodyState extends State<Body> {
           )
         ),
       ),
-      body: FutureBuilder<List<Products>?>(
-        future: _future,
+      body: StreamBuilder<QuerySnapshot>(
+        stream: _productStream,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -63,7 +61,15 @@ class _BodyState extends State<Body> {
           else if (snapshot.hasError) {
             return Center(child: Text('${snapshot.error}'));
           }
-          return buildGridView(snapshot.data!.where((p) => p.name.contains(controller.text.toUpperCase())).toList());
+          final List<Products> storedocs = [];
+            snapshot.data!.docs.map((DocumentSnapshot document) {
+              Map data = document.data() as Map<String, dynamic>;
+              storedocs.add(Products(id: data['Id'], name: data['Name'], productImage: data['ProductImage'],
+              price: (data['Price'] as int).toDouble(), originPrice: (data['OriginPrice'] as int).toDouble(), 
+              categoryId: data['CategoryId'], dateCreated: DateTime.parse(data['DateCreated']),
+              stock: (data['Stock'] as int).toInt(), description: data['Description']));
+            }).toList();
+          return buildGridView(storedocs.where((p) => p.name.contains(controller.text.toUpperCase())).toList());
         }
       ),
       backgroundColor: Color(0xFFF5F6F9)
@@ -84,9 +90,8 @@ class _BodyState extends State<Body> {
         return Container(
           child: GestureDetector(
             onTap: () async {
-              // KeyboardUtil.hideKeyboard(context);
-              var productDetail = await APIService.getProductById(data[index].id);
-              Navigator.pushNamed(context, DetailsScreen.routeName, arguments: ProductDetailsArguments(product: productDetail));
+              KeyboardUtil.hideKeyboard(context);
+              Navigator.pushNamed(context, DetailsScreen.routeName, arguments: ProductDetailsArguments(product: data[index]));
             },
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -94,7 +99,7 @@ class _BodyState extends State<Body> {
                 SizedBox(height: getProportionateScreenWidth(10)),
                 Hero(
                   tag: data[index].id,
-                  child: Image.network(Uri.https(Config.apiURL, data[index].productImage!).toString())),
+                  child: Image.network(data[index].productImage!)),
                 Row(
                   children: [
                     Expanded(child: Text(data[index].name, style: const TextStyle(fontSize: textSizeList, color: textColorList), maxLines: 2, overflow: TextOverflow.ellipsis)),

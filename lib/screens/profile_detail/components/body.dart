@@ -1,5 +1,8 @@
 import 'package:clockecommerce/models/constants.dart';
+import 'package:clockecommerce/models/users.dart';
 import 'package:clockecommerce/services/api_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../../services/shared_service.dart';
@@ -15,10 +18,13 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
+  List<Users> listUsers = [];
   final email = TextEditingController();
   final name = TextEditingController();
   final phone = TextEditingController();
   final address = TextEditingController();
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  CollectionReference users = FirebaseFirestore.instance.collection('Users');
   // LoginResponseModel? model;
   @override
   void initState() {
@@ -28,11 +34,28 @@ class _BodyState extends State<Body> {
   _getData() async {
     // model = await SharedService.loginDetails();
     // email.text = model!.name;
-    var model = await APIService.getUserProfile();
-    email.text = model.resultObj.email;
-    name.text = model.resultObj.name;
-    phone.text = model.resultObj.phoneNumber;
-    address.text = model.resultObj.address;
+    final User? user = auth.currentUser;
+    final uid = user!.uid;
+    await users.get().then((value) {
+      for (var doc in value.docs) {
+        listUsers.add(Users(id: doc.get('Id'), name: doc.get('Name'), dOB: doc.get('DOB'), address: doc.get('Address'), 
+        email: doc.get('Email'), phone: doc.get('Phone')));      
+      }
+    });
+    // var model = await APIService.getUserProfile();
+    // email.text = model.resultObj.email;
+    // name.text = model.resultObj.name;
+    // phone.text = model.resultObj.phoneNumber;
+    // address.text = model.resultObj.address;
+    for (var i = 0; i < listUsers.length; i++) {
+      var element = listUsers.elementAt(i);
+      if (element.id == uid) {
+        email.text = element.email;
+        name.text = element.name;
+        phone.text = element.phone;
+        address.text = element.address;
+      }
+    }
   }
   @override
   Widget build(BuildContext context) {

@@ -29,24 +29,25 @@ class ProductCard extends StatefulWidget {
 }
 
 class _ProductCardState extends State<ProductCard> {
-  var productDetail;
-  List<Products>? listProductFavorite = [];
+  // var productDetail;
+  // List<Products>? listProductFavorite = [];
 
 
   @override
   void initState() {
     super.initState();
-    fetchData();
+    // fetchData();
   }
 
-  fetchData() async {
-    var item = await APIService.getProductById(widget.product!.id);
-    var productFavorite = await APIService.getAllFavoriteProduct();
-    setState(() {
-      productDetail = item;
-      listProductFavorite = productFavorite;
-    });
-  }
+  // fetchData() async {
+  //   var item = await APIService.getProductById(widget.product!.id);
+  //   var productFavorite = await APIService.getAllFavoriteProduct();
+  //   setState(() {
+  //     productDetail = item;
+  //     listProductFavorite = productFavorite;
+  //   });
+  // }
+  
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -55,7 +56,7 @@ class _ProductCardState extends State<ProductCard> {
         width: getProportionateScreenWidth(widget.width),
         child: GestureDetector(
           onTap: () => 
-            Navigator.pushNamed(context, DetailsScreen.routeName, arguments: ProductDetailsArguments(product: productDetail)),
+            Navigator.pushNamed(context, DetailsScreen.routeName, arguments: ProductDetailsArguments(product: widget.product!)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -68,7 +69,7 @@ class _ProductCardState extends State<ProductCard> {
                   ),
                   child: Hero(
                     tag: widget.product!.id.toString(),
-                    child: Image.network(Uri.https(Config.apiURL, widget.product!.productImage!).toString()),
+                    child: Image.network(widget.product!.productImage!),
                   ),
                 ),
               ),

@@ -32,7 +32,7 @@ class _CartCardState extends State<CartCard> {
               ),
               child: Hero(
                 tag: widget.items.products!.id.toString(),
-                child: Image.network(Uri.https(Config.apiURL, widget.items.products!.productImage!).toString()),
+                child: Image.network(widget.items.products!.productImage!),
               ),
             ),
           ),

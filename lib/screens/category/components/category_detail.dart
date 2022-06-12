@@ -5,10 +5,11 @@ import 'package:clockecommerce/models/size_config.dart';
 import 'package:clockecommerce/models/utilities.dart';
 import 'package:clockecommerce/screens/details/details_screen.dart';
 import 'package:clockecommerce/services/api_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class CategoryDetail extends StatefulWidget {
-  final int id;
+  final String id;
   const CategoryDetail(this.id, {Key? key}) : super(key: key);
 
   @override
@@ -16,68 +17,33 @@ class CategoryDetail extends StatefulWidget {
 }
 
 class _CategoryDetailState extends State<CategoryDetail> {
-  late Future<List<Products>?> _future;
-  // List<Products>? products;
-  // bool isLoading = false;
-  @override
-  void initState() {
-    super.initState();
-    // fetchData();
-    _future = APIService.getAllProduct();
-  }
-
-  // fetchData() async {    
-  //   setState(() {
-  //     isLoading = true;
-  //   });
-  //   var item = await APIService.getAllProduct();
-  //   if (item != null)  {     
-  //     setState(() {
-  //       isLoading = false;
-  //       products = item;
-  //     });
-  //   } else {
-  //     setState(() {
-  //       isLoading = false;
-  //       products = [];
-  //     });
-  //   }
-  // }
-
-  // List<Products> getProductFromCate(int id) {
-  //   return products!.where((p) => p.categoryId == id).toList();
-  // }
-
-  Future<void> _pullRefresh() async {
-    List<Products>? freshFutureProducts = await APIService.getAllProduct();
-    await Future.delayed(const Duration(seconds: 1));
-    setState(() {
-      _future = Future.value(freshFutureProducts);   
-    });
-  }
-
+  final Stream<QuerySnapshot> _productStream = 
+    FirebaseFirestore.instance.collection('Products').snapshots();
+  CollectionReference products = FirebaseFirestore.instance.collection('Products');
   @override
   Widget build(BuildContext context) {
     // if (products == null || isLoading) {
     //   return const Center(child: CircularProgressIndicator());
     // }
     // return getBuildListView(widget.id);
-    return FutureBuilder<List<Products>?>(
-      future: _future,
+    return StreamBuilder<QuerySnapshot>(
+      stream: _productStream,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child : CircularProgressIndicator());
         }
         else if (snapshot.hasError) {
           return Center(child: Text('${snapshot.error}'));
-        }  
-        return RefreshIndicator(
-          triggerMode: RefreshIndicatorTriggerMode.onEdge,
-          displacement: 20,
-          edgeOffset: 0,
-          child: buildGridView(snapshot.data!.where((p) => p.categoryId == widget.id).toList()), 
-          onRefresh: _pullRefresh
-        );
+        }
+        final List<Products> storedocs = [];
+          snapshot.data!.docs.map((DocumentSnapshot document) {
+            Map data = document.data() as Map<String, dynamic>;
+            storedocs.add(Products(id: data['Id'], name: data['Name'], productImage: data['ProductImage'],
+            price: (data['Price'] as int).toDouble(), originPrice: (data['OriginPrice'] as int).toDouble(), 
+            categoryId: data['CategoryId'], dateCreated: DateTime.parse(data['DateCreated']),
+            stock: (data['Stock'] as int).toInt(), description: data['Description']));
+          }).toList();  
+        return buildGridView(storedocs.where((p) => p.categoryId == widget.id).toList());
       }
     );
   }
@@ -96,14 +62,13 @@ class _CategoryDetailState extends State<CategoryDetail> {
         return Container(
           child: GestureDetector(
             onTap: () async {
-              var productDetail = await APIService.getProductById(data[index].id);
-              Navigator.pushNamed(context, DetailsScreen.routeName, arguments: ProductDetailsArguments(product: productDetail));
+              Navigator.pushNamed(context, DetailsScreen.routeName, arguments: ProductDetailsArguments(product: data[index]));
             },
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: getProportionateScreenWidth(10)),
-                Image.network(Uri.https(Config.apiURL, data[index].productImage!).toString()),
+                Image.network(data[index].productImage!),
                 Row(
                   children: [
                     Expanded(child: Text(data[index].name, style: const TextStyle(fontSize: textSizeList, color: textColorList), maxLines: 2, overflow: TextOverflow.ellipsis)),

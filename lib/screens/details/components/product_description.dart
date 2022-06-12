@@ -10,7 +10,7 @@ class ProductDescription extends StatefulWidget {
   const ProductDescription({Key? key, required this.product, this.pressOnSeeMore}) : super(key: key);
 
   // final Products product;
-  final ProductDetail product;
+  final Products product;
   final GestureTapCallback? pressOnSeeMore;
 
   @override
@@ -18,7 +18,6 @@ class ProductDescription extends StatefulWidget {
 }
 
 class _ProductDescriptionState extends State<ProductDescription> {
-  List<Products>? listProductFavorite = [];
   late String firstHalf;
   late String secondHalf;
   bool flag = true;
@@ -33,15 +32,8 @@ class _ProductDescriptionState extends State<ProductDescription> {
       firstHalf = widget.product.description;
       secondHalf = "";
     }
-    fetchData();
   }
 
-  fetchData() async {
-    var productFavorite = await APIService.getAllFavoriteProduct();
-    setState(() {
-      listProductFavorite = productFavorite;
-    });
-  }
   @override
   Widget build(BuildContext context) {
     return Column(

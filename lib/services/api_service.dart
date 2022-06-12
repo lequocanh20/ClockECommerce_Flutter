@@ -208,27 +208,27 @@ class APIService {
     }
   }
 
-  static Future<List<Products>?> getAllFavoriteProduct() async {
-    var loginDetails = await SharedService.loginDetails();
+  // static Future<List<Products>?> getAllFavoriteProduct() async {
+  //   var loginDetails = await SharedService.loginDetails();
 
-    Map<String, String> requestHeaders = {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${loginDetails!.resultObj}'
-    };
+  //   Map<String, String> requestHeaders = {
+  //     'Content-Type': 'application/json',
+  //     'Authorization': 'Bearer ${loginDetails!.resultObj}'
+  //   };
 
-    var url = Uri.https(Config.apiURL, Config.productFavorite + loginDetails.resultObj!);
+  //   var url = Uri.https(Config.apiURL, Config.productFavorite + loginDetails.resultObj!);
 
-    var response = await client.get(
-      url, 
-      headers: requestHeaders,
-    );
-    if (response.statusCode == 200) {
-      return productsFromJson(response.body);
-    }
-    else {
-      throw Exception("Failed to load cate api");
-    }
-  }
+  //   var response = await client.get(
+  //     url, 
+  //     headers: requestHeaders,
+  //   );
+  //   if (response.statusCode == 200) {
+  //     return productsFromJson(response.body);
+  //   }
+  //   else {
+  //     throw Exception("Failed to load cate api");
+  //   }
+  // }
 
   static Future<FavoriteResponseModel> AddFavorite(FavoriteRequestModel model) async {
     var loginDetails = await SharedService.loginDetails();

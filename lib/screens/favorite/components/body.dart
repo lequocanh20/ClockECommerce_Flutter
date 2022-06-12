@@ -1,9 +1,12 @@
 import 'package:clockecommerce/models/config.dart';
 import 'package:clockecommerce/models/constants.dart';
+import 'package:clockecommerce/models/favorites.dart';
 import 'package:clockecommerce/models/products.dart';
 import 'package:clockecommerce/models/size_config.dart';
 import 'package:clockecommerce/models/utilities.dart';
 import 'package:clockecommerce/screens/details/details_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../../services/api_service.dart';
 
@@ -15,38 +18,62 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
-  late Future<List<Products>?> _future;
+  final Stream<QuerySnapshot> _favoriteStream = 
+    FirebaseFirestore.instance.collection('Favorites').snapshots();    
+  CollectionReference favorites = FirebaseFirestore.instance.collection('Favorites');
+  CollectionReference products = FirebaseFirestore.instance.collection('Products');
+  List<Products> listProducts = [];
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  String uid = "";
   @override
   void initState() {
     super.initState();
-    _future = APIService.getAllFavoriteProduct();
+    fetchData();
   }
 
-  Future<void> _pullRefresh() async {
-    List<Products>? freshFutureProducts = await APIService.getAllFavoriteProduct();
-    await Future.delayed(const Duration(seconds: 1));
-    setState(() {
-      _future = Future.value(freshFutureProducts);   
+  fetchData() async {
+    final User? user = auth.currentUser;
+    uid = user!.uid;
+    await products.get().then((value) {
+      for (var doc in value.docs) {
+        listProducts.add(Products(id: doc.get('Id'), originPrice: (doc.get('OriginPrice') as int).toDouble(), 
+          price: (doc.get('Price') as int).toDouble(), categoryId: doc.get('CategoryId'), stock: (doc.get('Stock') as int).toInt(), 
+          dateCreated: DateTime.parse(doc.get('DateCreated')), name: doc.get('Name'), description: doc.get('Description'),
+          productImage: doc.get('ProductImage')));       
+        }
     });
   }
-
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: RefreshIndicator(
-        child: FutureBuilder<List<Products>?>(
-          future: _future,
-          builder: (context, snapshot){
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
+      child: StreamBuilder<QuerySnapshot>(
+        stream: _favoriteStream,
+        builder: (context, snapshot){
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          else if (snapshot.hasError) {
+            return Center(child: Text('${snapshot.error}'));
+          }
+          final List<Favorites> storedocs = [];
+          snapshot.data!.docs.map((DocumentSnapshot document) {
+            Map data = document.data() as Map<String, dynamic>;
+            storedocs.add(Favorites(productId: data['ProductId'], userId: data['UserId']));
+          }).toList();          
+          final List<Products> result = [];
+          for (var i = 0; i < storedocs.length; i++) {
+            var element1 = storedocs.elementAt(i);
+            for (var j = 0; j < listProducts.length; j++) {
+              var element2 = listProducts.elementAt(j);
+              if (element1.productId == element2.id && element1.userId == uid) {
+                result.add(Products(id: element2.id, originPrice: element2.originPrice, 
+                price: element2.price, categoryId: element2.categoryId, stock: element2.stock, 
+                dateCreated: element2.dateCreated, name: element2.name, description: element2.description, productImage: element2.productImage));
+              }
             }
-            else if (snapshot.hasError) {
-              return Center(child: Text('${snapshot.error}'));
-            }
-            return buildGridView(snapshot.data!);
-          },
-        ),
-        onRefresh: _pullRefresh,
+          }
+          return buildGridView(result.toList());
+        },
       ),
     );
   }
@@ -65,18 +92,18 @@ class _BodyState extends State<Body> {
         return Container(
           child: GestureDetector(
             onTap: () async {
-              var productDetail = await APIService.getProductById(data[index].id);
-              final result = await Navigator.pushNamed(context, DetailsScreen.routeName, arguments: ProductDetailsArguments(product: productDetail));
-              List<Products>? freshFutureProducts = result as List<Products>;
-              setState(() {
-                _future = Future.value(freshFutureProducts);
-              });
+              // var productDetail = await APIService.getProductById(data[index].id);
+              // final result = await Navigator.pushNamed(context, DetailsScreen.routeName, arguments: ProductDetailsArguments(product: productDetail));
+              // List<Products>? freshFutureProducts = result as List<Products>;
+              // setState(() {
+              //   _future = Future.value(freshFutureProducts);
+              // });
             },
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: getProportionateScreenWidth(10)),
-                Image.network(Uri.https(Config.apiURL, data[index].productImage!).toString()),
+                Image.network(data[index].productImage!),
                 Row(
                   children: [
                     Expanded(child: Text(data[index].name, style: const TextStyle(fontSize: textSizeList, color: textColorList), maxLines: 2, overflow: TextOverflow.ellipsis)),

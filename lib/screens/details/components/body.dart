@@ -14,7 +14,7 @@ import 'product_images.dart';
 class Body extends StatefulWidget {
   // final Products product;
 
-  final ProductDetail product;
+  final Products product;
 
   const Body({Key? key, required this.product}) : super(key: key);
 

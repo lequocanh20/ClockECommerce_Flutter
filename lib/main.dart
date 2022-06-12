@@ -4,11 +4,13 @@ import 'package:clockecommerce/models/theme.dart';
 import 'package:clockecommerce/screens/home/home_screen.dart';
 import 'package:clockecommerce/screens/splash/splash_screen.dart';
 import 'package:clockecommerce/services/shared_service.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 Widget _defaultHome = SplashScreen();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   bool _result = await SharedService.isLoggedIn();
   if (_result) {
     _defaultHome = HomeScreen();

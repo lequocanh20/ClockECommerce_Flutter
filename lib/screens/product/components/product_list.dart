@@ -5,6 +5,7 @@ import 'package:clockecommerce/models/size_config.dart';
 import 'package:clockecommerce/models/utilities.dart';
 import 'package:clockecommerce/screens/details/details_screen.dart';
 import 'package:clockecommerce/services/api_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class ProductList extends StatefulWidget {
@@ -15,26 +16,13 @@ class ProductList extends StatefulWidget {
 }
 
 class _ProductListState extends State<ProductList> {
-  late Future<List<Products>?> _future;
-  @override
-  void initState() {
-    super.initState();
-    _future = APIService.getAllProduct();
-  } 
-
-  Future<void> _pullRefresh() async {
-    List<Products>? freshFutureProducts = await APIService.getAllProduct();
-    await Future.delayed(const Duration(seconds: 1));
-    setState(() {
-      _future = Future.value(freshFutureProducts);   
-    });
-  } 
-
-
+  final Stream<QuerySnapshot> _productStream = 
+    FirebaseFirestore.instance.collection('Products').snapshots();
+  CollectionReference products = FirebaseFirestore.instance.collection('Products');
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Products>?>(
-      future: _future,
+    return StreamBuilder<QuerySnapshot>(
+      stream: _productStream,
       builder: (context, snapshot){
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
@@ -42,10 +30,15 @@ class _ProductListState extends State<ProductList> {
         else if (snapshot.hasError) {
           return Center(child: Text('${snapshot.error}'));
         }
-        return RefreshIndicator(
-          child: buildGridView(snapshot.data!.toList()), 
-          onRefresh: _pullRefresh
-        );
+        final List<Products> storedocs = [];
+            snapshot.data!.docs.map((DocumentSnapshot document) {
+              Map data = document.data() as Map<String, dynamic>;
+              storedocs.add(Products(id: data['Id'], name: data['Name'], productImage: data['ProductImage'],
+              price: (data['Price'] as int).toDouble(), originPrice: (data['OriginPrice'] as int).toDouble(), 
+              categoryId: data['CategoryId'], dateCreated: DateTime.parse(data['DateCreated']),
+              stock: (data['Stock'] as int).toInt(), description: data['Description']));
+            }).toList();
+        return buildGridView(storedocs.toList());
       }
     );
   }
@@ -64,14 +57,13 @@ class _ProductListState extends State<ProductList> {
         return Container(
           child: GestureDetector(
             onTap: () async {
-              var productDetail = await APIService.getProductById(data[index].id);
-              Navigator.pushNamed(context, DetailsScreen.routeName, arguments: ProductDetailsArguments(product: productDetail));
+              Navigator.pushNamed(context, DetailsScreen.routeName, arguments: ProductDetailsArguments(product: data[index]));
             },
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: getProportionateScreenWidth(10)),
-                Image.network(Uri.https(Config.apiURL, data[index].productImage!).toString()),
+                Image.network(data[index].productImage!),
                 Row(
                   children: [
                     Expanded(child: Text(data[index].name, style: const TextStyle(fontSize: textSizeList, color: Colors.black), maxLines: 2, overflow: TextOverflow.ellipsis)),
