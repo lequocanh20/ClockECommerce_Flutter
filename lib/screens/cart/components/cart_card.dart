@@ -6,7 +6,7 @@ import 'package:clockecommerce/models/size_config.dart';
 import 'package:clockecommerce/models/utilities.dart';
 import 'package:flutter/material.dart';
 class CartCard extends StatefulWidget {
-  final Items items;
+  final Cart items;
   CartCard({
     Key? key,
     required this.items
@@ -31,8 +31,8 @@ class _CartCardState extends State<CartCard> {
                 color: kSecondaryColor.withOpacity(0.1),
               ),
               child: Hero(
-                tag: widget.items.products!.id.toString(),
-                child: Image.network(widget.items.products!.productImage!),
+                tag: widget.items.productId.toString(),
+                child: Image.network(widget.items.productImage!),
               ),
             ),
           ),
@@ -43,14 +43,14 @@ class _CartCardState extends State<CartCard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
               Text(
-                widget.items.products!.name,
+                widget.items.name.toString(),
                 style: const TextStyle(color: textColorList, fontSize: textSizeList),
                 maxLines: 2,
               ),
               const SizedBox(height: 10),
               Text.rich(
                 TextSpan(
-                  text: Utilities.formatCurrency(widget.items.products!.price),
+                  text: Utilities.formatCurrency(widget.items.price),
                   style: const TextStyle(
                       fontWeight: FontWeight.w600, color: kPrimaryColor),
                   children: [
