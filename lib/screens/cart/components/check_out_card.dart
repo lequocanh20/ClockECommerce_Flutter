@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:clockecommerce/components/default_button.dart';
 import 'package:clockecommerce/models/constants.dart';
@@ -105,17 +106,7 @@ class _CheckoutCardState extends State<CheckoutCard> {
                           ),
                           TextButton(
                             onPressed: () async {
-                              await makePayment();
-                              // Fluttertoast.showToast(
-                              //   msg: "Bạn đã đặt hàng thành công",
-                              //   toastLength: Toast.LENGTH_SHORT,
-                              //   gravity: ToastGravity.TOP,
-                              //   timeInSecForIosWeb: 1,
-                              //   backgroundColor: Colors.green,
-                              //   textColor: Colors.white,
-                              //   fontSize: 16.0
-                              // );
-                              // Navigator.pushNamed(context, HomeScreen.routeName);                              
+                              await makePayment(widget.sum);                                   
                             },
                             child: Text('Xác nhận'),
                           ),
@@ -132,19 +123,19 @@ class _CheckoutCardState extends State<CheckoutCard> {
     );
   }
 
-  Future<void> makePayment() async {
+  Future<void> makePayment(double amount) async {
     try {
 
       paymentIntentData =
-      await createPaymentIntent('20', 'USD'); //json.decode(response.body);
+      await createPaymentIntent(amount, 'VND'); //json.decode(response.body);
       // print('Response body==>${response.body.toString()}');
       final billingDetails = BillingDetails(
-        name: 'Flutter Stripe',
-        email: 'email@stripe.com',
-        phone: '+840774642207',
+        name: 'LE QUOC ANH',
+        email: 'lequocanh.qa@gmail.com',
+        phone: '+84774642207',
         address: Address(
           city: 'TPHCM',
-          country: 'VI',
+          country: 'VN',
           line1: 'Lien Ap 2-6',
           line2: '',
           state: 'Binh Chanh',
@@ -161,8 +152,8 @@ class _CheckoutCardState extends State<CheckoutCard> {
               testEnv: true,
               style: ThemeMode.dark,
               billingDetails: billingDetails,
-              merchantCountryCode: 'US',
-              merchantDisplayName: 'ANNIE')).then((value){
+              merchantCountryCode: 'VN',
+              merchantDisplayName: 'Clock Ecommerce')).then((value){
       });
 
 
@@ -188,8 +179,17 @@ class _CheckoutCardState extends State<CheckoutCard> {
         print('payment intent'+paymentIntentData!['amount'].toString());
         print('payment intent'+paymentIntentData.toString());
         //orderPlaceApi(paymentIntentData!['id'].toString());
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("paid successfully")));
-
+        // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("paid successfully")));
+        Fluttertoast.showToast(
+          msg: "Bạn đã đặt hàng thành công",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.TOP,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 16.0
+        );
+        Navigator.pushNamed(context, HomeScreen.routeName);
         paymentIntentData = null;
 
       }).onError((error, stackTrace){
@@ -210,12 +210,14 @@ class _CheckoutCardState extends State<CheckoutCard> {
   }
 
   //  Future<Map<String, dynamic>>
-  createPaymentIntent(String amount, String currency) async {
+  createPaymentIntent(double amount, String currency) async {
     try {
       Map<String, dynamic> body = {
-        'amount': calculateAmount('20'),
+        'description': 'Thanh toan dong ho tai Clock Ecommerce',
+        'amount': calculateAmount(amount),
         'currency': currency,
         'payment_method_types[]': 'card',
+        'receipt_email': 'lequocanh.huflit@gmail.com'
       };
       print(body);
       var response = await http.post(
@@ -232,8 +234,8 @@ class _CheckoutCardState extends State<CheckoutCard> {
     }
   }
 
-  calculateAmount(String amount) {
-    final a = (int.parse(amount)) * 100 ;
+  calculateAmount(double amount) {
+    final a = (amount).toInt();
     return a.toString();
   }
 }
