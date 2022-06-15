@@ -22,6 +22,19 @@ class _AddProductToCartState extends State<AddProductToCart> {
   @override
   void initState() {
     super.initState();
+    fetchCart();
+  }
+
+  fetchCart() async {
+    await carts.get().then((value) {
+      for (var doc in value.docs) {
+        if(doc.get('UserId') == FirebaseAuth.instance.currentUser!.uid) {
+          setState(() {
+            listCart.add(Cart(productId: doc.get('ProductId'), userId: doc.get('UserId'), quantity: doc.get('Quantity')));
+          });
+        }       
+      }
+    });
   }
   
   @override

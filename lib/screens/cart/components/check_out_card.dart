@@ -2,10 +2,13 @@ import 'dart:convert';
 import 'dart:ffi';
 
 import 'package:clockecommerce/components/default_button.dart';
+import 'package:clockecommerce/models/carts.dart';
 import 'package:clockecommerce/models/constants.dart';
 import 'package:clockecommerce/models/size_config.dart';
 import 'package:clockecommerce/models/utilities.dart';
 import 'package:clockecommerce/screens/home/home_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -15,9 +18,11 @@ import 'package:intl/intl.dart';
 
 class CheckoutCard extends StatefulWidget {
   double sum = 0.0;
+  List<Cart> cartDetails = [];
   CheckoutCard({
     Key? key,
-    required this.sum
+    required this.sum,
+    required this.cartDetails
   }) : super(key: key);
 
   @override
@@ -25,6 +30,9 @@ class CheckoutCard extends StatefulWidget {
 }
 
 class _CheckoutCardState extends State<CheckoutCard> {
+  CollectionReference checkedout = FirebaseFirestore.instance.collection('Checkedout');
+  CollectionReference carts = FirebaseFirestore.instance.collection('Carts');
+  List userListProduct = [];
   Map<String, dynamic>? paymentIntentData;
   @override
   Widget build(BuildContext context) {
@@ -106,7 +114,7 @@ class _CheckoutCardState extends State<CheckoutCard> {
                           ),
                           TextButton(
                             onPressed: () async {
-                              await makePayment(widget.sum);                                   
+                              await makePayment(widget.sum);       
                             },
                             child: Text('Xác nhận'),
                           ),
@@ -180,6 +188,31 @@ class _CheckoutCardState extends State<CheckoutCard> {
         print('payment intent'+paymentIntentData.toString());
         //orderPlaceApi(paymentIntentData!['id'].toString());
         // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("paid successfully")));
+        for (int i = 0; i < widget.cartDetails.length; i++) {
+          userListProduct.add({
+            "ProductId": widget.cartDetails[i].productId,
+            "Price": widget.cartDetails[i].price,
+            "ProductImage": widget.cartDetails[i].productImage,
+            "Quantity": widget.cartDetails[i].quantity,
+            "Name": widget.cartDetails[i].name
+          });
+        }
+        String id = checkedout.doc().id;
+        final data = {
+          "Id": id, 
+          "PaymentId": paymentIntentData!['id'].toString(),
+          "UserId": FirebaseAuth.instance.currentUser!.uid,                      
+          "Item": FieldValue.arrayUnion(userListProduct),
+          "Amount": (paymentIntentData!['amount'] as int).toDouble()
+        };
+        checkedout.doc(id).set(data).then((value) => {}).catchError((error) => print('Failed to Add Checked Out Into Firebase: $error'));
+        for (int i = 0; i < widget.cartDetails.length; i++) {
+          carts
+            .doc(widget.cartDetails[i].productId! + FirebaseAuth.instance.currentUser!.uid)
+            .delete()
+            .then((value) => print('Cart Deleted'))
+            .catchError((error) => print('Failed to Delete Cart: $error'));
+        }
         Fluttertoast.showToast(
           msg: "Bạn đã đặt hàng thành công",
           toastLength: Toast.LENGTH_SHORT,

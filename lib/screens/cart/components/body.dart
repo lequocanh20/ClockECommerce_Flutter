@@ -127,7 +127,7 @@ class _BodyState extends State<Body> {
           ),
         ),
       ),
-      bottomNavigationBar: CheckoutCard(sum: sum),
+      bottomNavigationBar: CheckoutCard(sum: sum, cartDetails: cartdetails),
     );
   }
 
