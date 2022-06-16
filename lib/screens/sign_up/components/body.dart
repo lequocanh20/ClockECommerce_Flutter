@@ -18,7 +18,7 @@ class Body extends StatelessWidget {
             child: Column(
               children: [
                 SizedBox(height: SizeConfig.screenHeight! * 0.04), // 4%
-                Text("Đăng ký tài khoản"),
+                Text("Đăng ký tài khoản", style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.black),),
                 SizedBox(height: SizeConfig.screenHeight! * 0.04),
                 SignUpForm(),
                 SizedBox(height: SizeConfig.screenHeight! * 0.04),                              
