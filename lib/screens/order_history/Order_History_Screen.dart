@@ -25,10 +25,11 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
   fetchDataCart() async {
     await checkedout.get().then((value) {
       for (var doc in value.docs) {
-        if(doc.get('UserId') == FirebaseAuth.instance.currentUser!.uid) {
+        if(doc.get('OrderEmail') == FirebaseAuth.instance.currentUser!.email) {
           setState(() {
             listCheckedOut.add(CheckedOut(id: doc.get('Id'), item: doc.get('OrderItems'), 
-            paymentId: doc.get('PaymentId'), userId: doc.get('UserId')));
+            paymentId: doc.get('PaymentId'), orderAddress: doc.get('OrderAddress'), orderEmail: doc.get('OrderEmail'), 
+            orderName: doc.get('OrderName'), orderPhone: doc.get('OrderName'), amount: doc.get('Amount')));
           });             
         }          
       }

@@ -154,7 +154,7 @@ class _CheckoutCardState extends State<CheckoutCard> {
                   //   ),
                   // ),
                     press: () => {
-                      Navigator.pushNamed(context, ConfirmAddress.routeName, arguments: InformCartArguments(cartDetails: widget.cartDetails, sum: widget.sum))
+                      Navigator.pushNamed(context, ConfirmAddress.routeName, arguments: InformCartArguments(cartDetails: widget.cartDetails, sum: resultSum == 0.0 ? widget.sum : resultSum))
                     },
                   )
                 ),

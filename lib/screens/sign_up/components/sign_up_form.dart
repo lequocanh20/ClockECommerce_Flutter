@@ -91,11 +91,31 @@ class _SignUpFormState extends State<SignUpForm> {
                       isAPIcallProcess = false;
                     });
                     KeyboardUtil.hideKeyboard(context);
-                    Navigator.pushNamedAndRemoveUntil(
+                    FormHelper.showSimpleAlertDialog(
                       context, 
-                      SignInScreen.routeName, 
-                      (route) => false
+                      "Clock Ecommerce", 
+                      "Đăng ký tài khoản thành công! Tiến hành đăng nhập để sử dụng.", 
+                      "OK", 
+                      () {
+                        FocusScopeNode currentFocus = FocusScope.of(context);
+                        if (!currentFocus.hasPrimaryFocus) {
+                          currentFocus.unfocus();
+                        }
+                        setState(() {
+                          isAPIcallProcess = false;
+                        });
+                        Navigator.pushNamedAndRemoveUntil(
+                          context, 
+                          SignInScreen.routeName, 
+                          (route) => false
+                        );
+                      }
                     );
+                    // Navigator.pushNamedAndRemoveUntil(
+                    //   context, 
+                    //   SignInScreen.routeName, 
+                    //   (route) => false
+                    // );
                   })
                   .catchError((error) => print('create user fail: $error'));                 
                 }).catchError((e) {
