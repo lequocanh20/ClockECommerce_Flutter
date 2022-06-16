@@ -216,6 +216,7 @@ class _BodyState extends State<Body> {
 
   TextFormField newPassWordTextFormField() {
     return TextFormField(
+      obscureText: true,
       controller: newPassword,
       decoration: const InputDecoration(
           border: OutlineInputBorder(),
@@ -231,6 +232,7 @@ class _BodyState extends State<Body> {
 
   TextFormField currentPasswordTextFormField() {
     return TextFormField(
+      obscureText: true,
       controller: currentPassword,
       decoration: const InputDecoration(
           border: OutlineInputBorder(),

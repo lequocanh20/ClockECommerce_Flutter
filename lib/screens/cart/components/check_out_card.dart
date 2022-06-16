@@ -4,11 +4,14 @@ import 'dart:ffi';
 import 'package:clockecommerce/components/default_button.dart';
 import 'package:clockecommerce/models/carts.dart';
 import 'package:clockecommerce/models/constants.dart';
+import 'package:clockecommerce/models/promotions.dart';
 import 'package:clockecommerce/models/size_config.dart';
 import 'package:clockecommerce/models/utilities.dart';
 import 'package:clockecommerce/screens/confirm_address_order/components/body.dart';
 import 'package:clockecommerce/screens/confirm_address_order/confirm_address_screen.dart';
 import 'package:clockecommerce/screens/home/home_screen.dart';
+import 'package:clockecommerce/screens/order_history/Order_History_Screen.dart';
+import 'package:clockecommerce/screens/promotion/promotion_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +34,11 @@ class CheckoutCard extends StatefulWidget {
 }
 
 class _CheckoutCardState extends State<CheckoutCard> {
+  CollectionReference promotions = FirebaseFirestore.instance.collection('Promotions');
+  List<Promotions> promotionList = [];
+  String idPromotion = '';
+  double resultSum = 0.0;
+  Promotions pm = null as Promotions;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -71,7 +79,33 @@ class _CheckoutCardState extends State<CheckoutCard> {
                   child: SvgPicture.asset("assets/icons/receipt.svg"),
                 ),
                 Spacer(),
-                Text("Nhập mã khuyến mãi"),
+                TextButton(
+                  child: pm == null as Promotions ? Text("Nhập mã khuyến mãi") : Text(pm.codePromotion),
+                  onPressed: () async {
+                    final promotion = await Navigator.pushNamed(context, PromotionScreen.routeName);
+                    setState(() {
+                      idPromotion = promotion as String;                    
+                    });
+                    await promotions.get().then((value) {
+                      for (var doc in value.docs) {
+                        if (doc.get('Id') == idPromotion) {
+                          setState(() {
+                            promotionList.add(Promotions(id: doc.get('Id'), name: doc.get('Name'), 
+                            codePromotion: doc.get('CodePromotion'), salesOff: (doc.get('SalesOff') as int).toDouble(), maxPrice: (doc.get('MaxPrice') as int).toDouble(),
+                            promotionImage: doc.get('PromotionImage'), expiredDate: DateTime.parse((doc.get('ExpiredDate') as Timestamp).toDate().toString()).toString()));
+                            pm = Promotions(id: doc.get('Id'), name: doc.get('Name'), 
+                            codePromotion: doc.get('CodePromotion'), salesOff: (doc.get('SalesOff') as int).toDouble(), maxPrice: (doc.get('MaxPrice') as int).toDouble(),
+                            promotionImage: doc.get('PromotionImage'), expiredDate: DateTime.parse((doc.get('ExpiredDate') as Timestamp).toDate().toString()).toString());
+                          });
+                        }                       
+                      }
+                    });
+                    setState(() {
+                      resultSum = widget.sum - (widget.sum * (pm.salesOff/100) > pm.maxPrice 
+                      ? pm.maxPrice : widget.sum * (pm.salesOff/100));
+                    });                                   
+                  },
+                ),
                 const SizedBox(width: 10),
                 Icon(
                   Icons.arrow_forward_ios,
@@ -89,7 +123,7 @@ class _CheckoutCardState extends State<CheckoutCard> {
                     text: "Tổng thanh toán:\n",
                     children: [
                       TextSpan(
-                        text: Utilities.formatCurrency(widget.sum),
+                        text: resultSum == 0.0 ? Utilities.formatCurrency(widget.sum) : Utilities.formatCurrency(resultSum),
                         style: TextStyle(fontSize: 16, color: Colors.black),
                       ),
                     ],

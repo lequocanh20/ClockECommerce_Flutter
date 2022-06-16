@@ -1,7 +1,5 @@
 import 'package:clockecommerce/models/constants.dart';
-import 'package:clockecommerce/models/favorite_request_model.dart';
 import 'package:clockecommerce/models/favorites.dart';
-import 'package:clockecommerce/models/product_detail.dart';
 import 'package:clockecommerce/models/products.dart';
 import 'package:clockecommerce/models/size_config.dart';
 import 'package:clockecommerce/screens/details/components/body.dart';

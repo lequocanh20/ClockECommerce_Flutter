@@ -8,6 +8,7 @@ import 'package:clockecommerce/screens/order_history/Order_History_Screen.dart';
 import 'package:clockecommerce/screens/product/product_screen.dart';
 import 'package:clockecommerce/screens/profile/profile_screen.dart';
 import 'package:clockecommerce/screens/profile_detail/ProfileDetail_Screen.dart';
+import 'package:clockecommerce/screens/promotion/promotion_screen.dart';
 import 'package:clockecommerce/screens/search/search_screen.dart';
 import 'package:clockecommerce/screens/sign_in/sign_in_screen.dart';
 import 'package:clockecommerce/screens/sign_up/sign_up_screen.dart';
@@ -28,5 +29,6 @@ final Map<String, WidgetBuilder> routes = {
   SearchScreen.routeName: (context) => SearchScreen(),
   ProfileDetailScreen.routeName: (context) => ProfileDetailScreen(),
   OrderHistoryScreen.routeName: (context) => OrderHistoryScreen(),
-  ConfirmAddress.routeName: (context) => ConfirmAddress()
+  ConfirmAddress.routeName: (context) => ConfirmAddress(),
+  PromotionScreen.routeName: (context) => PromotionScreen()
 };
