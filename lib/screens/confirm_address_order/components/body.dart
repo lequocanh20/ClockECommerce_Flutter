@@ -42,7 +42,7 @@ class _BodyState extends State<Body> {
     final uid = user!.uid;
     await users.get().then((value) {
       for (var doc in value.docs) {
-        listUsers.add(Users(id: doc.get('Id'), name: doc.get('Name'), dOB: doc.get('DOB'), address: doc.get('Address'), 
+        listUsers.add(Users(id: doc.get('Id'), name: doc.get('Name'), address: doc.get('Address'), 
         email: doc.get('Email'), phone: doc.get('Phone')));      
       }
     });

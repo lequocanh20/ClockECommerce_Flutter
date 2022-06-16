@@ -102,8 +102,12 @@ class _SignFormState extends State<SignForm> {
                             if (!currentFocus.hasPrimaryFocus) {
                               currentFocus.unfocus();
                             }
+                            setState(() {
+                              isAPIcallProcess = false;
+                            });
                             Navigator.pop(context);
-                          });
+                          }
+                        );
                       });                                                           
                     }
                     // if all are valid then go to success screen

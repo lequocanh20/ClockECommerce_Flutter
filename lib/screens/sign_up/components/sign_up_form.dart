@@ -1,11 +1,14 @@
 import 'package:clockecommerce/components/custom_suffix_icon.dart';
 import 'package:clockecommerce/components/default_button.dart';
 import 'package:clockecommerce/components/form_error.dart';
+import 'package:clockecommerce/helper/keyboard.dart';
 import 'package:clockecommerce/models/config.dart';
 import 'package:clockecommerce/models/constants.dart';
 import 'package:clockecommerce/models/register_request_model.dart';
 import 'package:clockecommerce/models/size_config.dart';
 import 'package:clockecommerce/screens/sign_in/sign_in_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:snippet_coder_utils/FormHelper.dart';
 
@@ -17,13 +20,13 @@ class SignUpForm extends StatefulWidget {
 
 class _SignUpFormState extends State<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
-  late String email;
-  late String password;
-  late String confirmpassword;
-  late String phone;
-  late String name;
-  late String username;
-  late String address;
+  final email = TextEditingController();
+  final password = TextEditingController();
+  final confirmpassword = TextEditingController();
+  final phone = TextEditingController();
+  final name = TextEditingController();
+  final username = TextEditingController();
+  final address = TextEditingController();
   bool isAPIcallProcess = false;
   bool remember = false;
   final List<String> errors = [];
@@ -41,7 +44,7 @@ class _SignUpFormState extends State<SignUpForm> {
         errors.remove(error);
       });
   }
-
+  CollectionReference users = FirebaseFirestore.instance.collection('Users');
   @override
   Widget build(BuildContext context) {
     if (isAPIcallProcess) {
@@ -59,8 +62,6 @@ class _SignUpFormState extends State<SignUpForm> {
           SizedBox(height: getProportionateScreenHeight(30)),
           buildPhoneFormField(),
           SizedBox(height: getProportionateScreenHeight(30)),
-          buildUserNameFormField(),
-          SizedBox(height: getProportionateScreenHeight(30)),
           buildPasswordFormField(),
           SizedBox(height: getProportionateScreenHeight(30)),
           buildConfirmPassFormField(),
@@ -74,17 +75,58 @@ class _SignUpFormState extends State<SignUpForm> {
                 setState(() {
                   isAPIcallProcess = true;
                 });
+                FirebaseAuth.instance.createUserWithEmailAndPassword(email: email.text, password: password.text).then((value) async {
+                  final data = {
+                    "Id": value.user!.uid,
+                    "Name": name.text,
+                    "Email": email.text,
+                    "Phone": phone.text,
+                    "Address": address.text
+                };
+                  users
+                  .doc(value.user!.uid)
+                  .set(data)
+                  .then((value) {
+                    setState(() {
+                      isAPIcallProcess = false;
+                    });
+                    KeyboardUtil.hideKeyboard(context);
+                    Navigator.pushNamedAndRemoveUntil(
+                      context, 
+                      SignInScreen.routeName, 
+                      (route) => false
+                    );
+                  })
+                  .catchError((error) => print('create user fail: $error'));                 
+                }).catchError((e) {
+                  FormHelper.showSimpleAlertDialog(
+                    context, 
+                    "Clock Ecommerce", 
+                    e.message, 
+                    "OK", 
+                    () {
+                      FocusScopeNode currentFocus = FocusScope.of(context);
+                      if (!currentFocus.hasPrimaryFocus) {
+                        currentFocus.unfocus();
+                      }
+                      setState(() {
+                        isAPIcallProcess = false;
+                      });
+                      Navigator.pop(context);
+                    }
+                  );
+                });
                 // if all are valid then go to success screen
                 // Navigator.pushNamed(context, CompleteProfileScreen.routeName);
-                RegisterRequestModel model = RegisterRequestModel(
-                    name: name,
-                    email: email,
-                    address: address,
-                    phoneNumber: phone,
-                    userName: username, 
-                    password: password,
-                    confirmPassword: confirmpassword
-                  );                  
+                // RegisterRequestModel model = RegisterRequestModel(
+                //     name: name,
+                //     email: email,
+                //     address: address,
+                //     phoneNumber: phone,
+                //     userName: username, 
+                //     password: password,
+                //     confirmPassword: confirmpassword
+                //   );                  
                   // APIService.register(model).then((response) async {                   
                   //   setState(() {
                   //     isAPIcallProcess = false;
@@ -127,20 +169,20 @@ class _SignUpFormState extends State<SignUpForm> {
   TextFormField buildConfirmPassFormField() {
     return TextFormField(
       obscureText: true,
-      onSaved: (newValue) => confirmpassword = newValue!,
+      onSaved: (newValue) => confirmpassword.text = newValue!,
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: kConfirmPassNullError);
-        } else if (value.isNotEmpty && password == confirmpassword) {
+        } else if (value.isNotEmpty && password.text == confirmpassword.text) {
           removeError(error: kMatchPassError);
         }
-        confirmpassword = value;
+        confirmpassword.text = value;
       },
       validator: (value) {
         if (value!.isEmpty) {
           addError(error: kConfirmPassNullError);
           return "";
-        } else if ((password != value)) {
+        } else if ((password.text != value)) {
           addError(error: kMatchPassError);
           return "";
         }
@@ -156,14 +198,14 @@ class _SignUpFormState extends State<SignUpForm> {
   TextFormField buildPasswordFormField() {
     return TextFormField(
       obscureText: true,
-      onSaved: (newValue) => password = newValue!,
+      onSaved: (newValue) => password.text = newValue!,
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: kPassNullError);
         } else if (value.length >= 8) {
           removeError(error: kShortPassError);
         }
-        password = value;
+        password.text = value;
       },
       validator: (value) {
         if (value!.isEmpty) {
@@ -189,7 +231,7 @@ class _SignUpFormState extends State<SignUpForm> {
   TextFormField buildEmailFormField() {
     return TextFormField(
       keyboardType: TextInputType.emailAddress,
-      onSaved: (newValue) => email = newValue!,
+      onSaved: (newValue) => email.text = newValue!,
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: kEmailNullError);
@@ -197,7 +239,7 @@ class _SignUpFormState extends State<SignUpForm> {
         else if (emailValidatorRegExp.hasMatch(value)) {
           removeError(error: kInvalidEmailError);
         }      
-        email = value;        
+        email.text = value;        
       },
       validator: (value) {
         if (value!.isEmpty) {
@@ -220,12 +262,12 @@ class _SignUpFormState extends State<SignUpForm> {
 
   TextFormField buildNameFormField() {
     return TextFormField(
-      onSaved: (newValue) => name = newValue!,
+      onSaved: (newValue) => name.text = newValue!,
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: kNamelNullError);
         }
-        name = value;
+        name.text = value;
       },
       validator: (value) {
         if (value!.isEmpty) {
@@ -241,39 +283,14 @@ class _SignUpFormState extends State<SignUpForm> {
     );
   }
 
-  TextFormField buildUserNameFormField() {
-    return TextFormField(
-      onSaved: (newValue) => username = newValue!,
-      onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kUserNamelNullError);
-        }
-        username = value;
-      },
-      validator: (value) {
-        if (value!.isEmpty) {
-          addError(error: kUserNamelNullError);
-          return "";
-        }
-        return null;
-      },
-      decoration: InputDecoration(
-        hintText: "Nhập tên tài khoản",
-        // If  you are using latest version of flutter then lable text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
-        suffixIcon: CustomSuffixIcon(svgIcon: "assets/icons/Mail.svg"),
-      ),
-    );
-  }
-
   TextFormField buildAddressFormField() {
     return TextFormField(
-      onSaved: (newValue) => address = newValue!,
+      onSaved: (newValue) => address.text = newValue!,
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: kAddressNullError);
         }
-        address = value;     
+        address.text = value;     
       },
       validator: (value) {
         if (value!.isEmpty) {
@@ -294,12 +311,12 @@ class _SignUpFormState extends State<SignUpForm> {
   TextFormField buildPhoneFormField() {
     return TextFormField(
       keyboardType: TextInputType.phone,
-      onSaved: (newValue) => phone = newValue!,
+      onSaved: (newValue) => phone.text = newValue!,
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: kPhoneNumberNullError);
         }
-        phone = value;
+        phone.text = value;
       },
       validator: (value) {
         if (value!.isEmpty) {
