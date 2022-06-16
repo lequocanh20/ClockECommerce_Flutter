@@ -2,17 +2,13 @@ import 'package:clockecommerce/components/custom_suffix_icon.dart';
 import 'package:clockecommerce/components/default_button.dart';
 import 'package:clockecommerce/components/form_error.dart';
 import 'package:clockecommerce/helper/keyboard.dart';
-import 'package:clockecommerce/models/config.dart';
 import 'package:clockecommerce/models/constants.dart';
-import 'package:clockecommerce/models/login_request_model.dart';
 import 'package:clockecommerce/models/size_config.dart';
-import 'package:clockecommerce/screens/login_success/login_success_screen.dart';
-import 'package:clockecommerce/services/api_service.dart';
+import 'package:clockecommerce/screens/home/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:snippet_coder_utils/FormHelper.dart';
-import 'package:snippet_coder_utils/ProgressHUD.dart';
 
 class SignForm extends StatefulWidget {
   @override
@@ -64,16 +60,6 @@ class _SignFormState extends State<SignForm> {
                 SizedBox(height: getProportionateScreenHeight(30)),
                 Row(
                   children: [
-                    Checkbox(
-                      value: remember,
-                      activeColor: kPrimaryColor,
-                      onChanged: (value) {
-                        setState(() {
-                          remember = value!;
-                        });
-                      },
-                    ),
-                    Text("Nhớ mật khẩu"),
                     Spacer(),
                     GestureDetector(
                       onTap: () => {},
@@ -88,7 +74,7 @@ class _SignFormState extends State<SignForm> {
                 FormError(errors: errors),
                 SizedBox(height: getProportionateScreenHeight(20)),
                 DefaultButton(
-                  text: "Tiếp tục",
+                  text: "Đăng nhập",
                   press: () {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
@@ -102,7 +88,7 @@ class _SignFormState extends State<SignForm> {
                         KeyboardUtil.hideKeyboard(context);
                         Navigator.pushNamedAndRemoveUntil(
                           context, 
-                          LoginSuccessScreen.routeName, 
+                          HomeScreen.routeName, 
                           (route) => false
                         );
                       }).catchError((e) {
@@ -152,11 +138,9 @@ class _SignFormState extends State<SignForm> {
         return null;
       },
       decoration: InputDecoration(
-        labelText: "Mật khẩu",
         hintText: "Nhập mật khẩu",
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
-        floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: CustomSuffixIcon(svgIcon: "assets/icons/Lock.svg"),
       ),
     );
@@ -166,30 +150,26 @@ class _SignFormState extends State<SignForm> {
     return TextFormField(
       keyboardType: TextInputType.emailAddress,
       onSaved: (newValue) => email.text = newValue!,
-      // onChanged: (value) {
-      //   if (value.isNotEmpty) {
-      //     removeError(error: kEmailNullError);
-      //   } else if (emailValidatorRegExp.hasMatch(value)) {
-      //     removeError(error: kInvalidEmailError);
-      //   }
-      //   return null;
-      // },
-      // validator: (value) {
-      //   if (value!.isEmpty) {
-      //     addError(error: kEmailNullError);
-      //     return "";
-      //   } else if (!emailValidatorRegExp.hasMatch(value)) {
-      //     addError(error: kInvalidEmailError);
-      //     return "";
-      //   }
-      //   return null;
-      // },
+      onChanged: (value) {
+        if (value.isNotEmpty) {
+          removeError(error: kEmailNullError);
+        } else if (emailValidatorRegExp.hasMatch(value)) {
+          removeError(error: kInvalidEmailError);
+        }
+        return null;
+      },
+      validator: (value) {
+        if (value!.isEmpty) {
+          addError(error: kEmailNullError);
+          return "";
+        } else if (!emailValidatorRegExp.hasMatch(value)) {
+          addError(error: kInvalidEmailError);
+          return "";
+        }
+        return null;
+      },
       decoration: InputDecoration(
-        labelText: "Email",
         hintText: "Nhập email",
-        // If  you are using latest version of flutter then lable text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
-        floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: CustomSuffixIcon(svgIcon: "assets/icons/Mail.svg"),
       ),
     );

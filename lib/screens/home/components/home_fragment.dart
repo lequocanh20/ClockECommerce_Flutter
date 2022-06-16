@@ -1,11 +1,9 @@
-import 'package:clockecommerce/models/products.dart';
 import 'package:clockecommerce/models/size_config.dart';
 import 'package:clockecommerce/screens/home/components/categories.dart';
 import 'package:clockecommerce/screens/home/components/advertisement_banner.dart';
 import 'package:clockecommerce/screens/home/components/home_header.dart';
 import 'package:clockecommerce/screens/home/components/latest_product.dart';
 import 'package:clockecommerce/screens/home/components/special_offers.dart';
-import 'package:clockecommerce/services/api_service.dart';
 import 'package:flutter/material.dart';
 
 class HomeDetail extends StatefulWidget {

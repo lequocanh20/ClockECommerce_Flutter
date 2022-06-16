@@ -1,10 +1,7 @@
 import 'package:clockecommerce/models/constants.dart';
-import 'package:clockecommerce/models/product_detail.dart';
 import 'package:clockecommerce/models/products.dart';
 import 'package:clockecommerce/models/size_config.dart';
-import 'package:clockecommerce/services/api_service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class ProductDescription extends StatefulWidget {
   const ProductDescription({Key? key, required this.product, this.pressOnSeeMore}) : super(key: key);
@@ -47,28 +44,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
               Flexible(child: Text(
                 widget.product.name,
                 style: Theme.of(context).textTheme.headline6,
-              )),
-              Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
-                  decoration: BoxDecoration(
-                    color: kPrimaryColor,
-                    borderRadius: BorderRadius.circular(14),
-                  ),
-                  child: Row(
-                    children: [
-                      Text(
-                        widget.product.rating.toString(),
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      const SizedBox(width: 5),
-                      SvgPicture.asset("assets/icons/Star Icon.svg"),
-                    ],
-                  ),
-                )
+              )),             
             ],
           ),
         ),

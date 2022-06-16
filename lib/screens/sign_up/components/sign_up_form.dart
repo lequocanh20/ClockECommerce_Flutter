@@ -6,7 +6,6 @@ import 'package:clockecommerce/models/constants.dart';
 import 'package:clockecommerce/models/register_request_model.dart';
 import 'package:clockecommerce/models/size_config.dart';
 import 'package:clockecommerce/screens/sign_in/sign_in_screen.dart';
-import 'package:clockecommerce/services/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:snippet_coder_utils/FormHelper.dart';
 
@@ -86,37 +85,37 @@ class _SignUpFormState extends State<SignUpForm> {
                     password: password,
                     confirmPassword: confirmpassword
                   );                  
-                  APIService.register(model).then((response) async {                   
-                    setState(() {
-                      isAPIcallProcess = false;
-                    });
+                  // APIService.register(model).then((response) async {                   
+                  //   setState(() {
+                  //     isAPIcallProcess = false;
+                  //   });
 
-                    if (response.resultObj != null) {
-                      FormHelper.showSimpleAlertDialog(
-                        context, 
-                        Config.appName, 
-                        "Đăng ký thành công. Vui lòng xác thực email trước khi đăng nhập.", 
-                        "OK", 
-                        () {
-                          Navigator.pushNamedAndRemoveUntil(
-                            context, 
-                            SignInScreen.routeName, 
-                            (route) => false
-                          );
-                        }
-                      );                                          
-                    }
-                    else {
-                      FormHelper.showSimpleAlertDialog(
-                        context, 
-                        Config.appName, 
-                        response.message!, 
-                        "OK", 
-                        () {
-                          Navigator.pop(context);
-                        });
-                    }
-                  });
+                  //   if (response.resultObj != null) {
+                  //     FormHelper.showSimpleAlertDialog(
+                  //       context, 
+                  //       Config.appName, 
+                  //       "Đăng ký thành công. Vui lòng xác thực email trước khi đăng nhập.", 
+                  //       "OK", 
+                  //       () {
+                  //         Navigator.pushNamedAndRemoveUntil(
+                  //           context, 
+                  //           SignInScreen.routeName, 
+                  //           (route) => false
+                  //         );
+                  //       }
+                  //     );                                          
+                  //   }
+                  //   else {
+                  //     FormHelper.showSimpleAlertDialog(
+                  //       context, 
+                  //       Config.appName, 
+                  //       response.message!, 
+                  //       "OK", 
+                  //       () {
+                  //         Navigator.pop(context);
+                  //       });
+                  //   }
+                  // });
               }
             },
           ),
@@ -148,11 +147,7 @@ class _SignUpFormState extends State<SignUpForm> {
         return null;
       },
       decoration: InputDecoration(
-        labelText: "Xác nhận mật khẩu",
         hintText: "Nhập lại mật khẩu",
-        // If  you are using latest version of flutter then lable text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
-        floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: CustomSuffixIcon(svgIcon: "assets/icons/Lock.svg"),
       ),
     );
@@ -182,12 +177,11 @@ class _SignUpFormState extends State<SignUpForm> {
         return null;
       },
       decoration: InputDecoration(
-        labelText: "Mật khẩu",
         hintText: "Nhập mật khẩu",
-        // If  you are using latest version of flutter then lable text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
-        floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: CustomSuffixIcon(svgIcon: "assets/icons/Lock.svg"),
+        // enabledBorder: OutlineInputBorder(
+        //           borderRadius: BorderRadius.circular(0),
+        //         )
       ),
     );
   }
@@ -218,11 +212,7 @@ class _SignUpFormState extends State<SignUpForm> {
         return null;
       },
       decoration: InputDecoration(
-        labelText: "Email",
         hintText: "Nhập email",
-        // If  you are using latest version of flutter then lable text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
-        floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: CustomSuffixIcon(svgIcon: "assets/icons/Mail.svg"),
       ),
     );
@@ -245,11 +235,7 @@ class _SignUpFormState extends State<SignUpForm> {
         return null;
       },
       decoration: InputDecoration(
-        labelText: "Tên",
         hintText: "Nhập tên",
-        // If  you are using latest version of flutter then lable text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
-        floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: CustomSuffixIcon(svgIcon: "assets/icons/Mail.svg"),
       ),
     );
@@ -272,11 +258,9 @@ class _SignUpFormState extends State<SignUpForm> {
         return null;
       },
       decoration: InputDecoration(
-        labelText: "Tài khoản",
         hintText: "Nhập tên tài khoản",
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
-        floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: CustomSuffixIcon(svgIcon: "assets/icons/Mail.svg"),
       ),
     );
@@ -299,11 +283,9 @@ class _SignUpFormState extends State<SignUpForm> {
         return null;
       },
       decoration: InputDecoration(
-        labelText: "Địa chỉ",
         hintText: "Nhập địa chỉ",
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
-        floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: CustomSuffixIcon(svgIcon: "assets/icons/Mail.svg"),
       ),
     );
@@ -327,11 +309,9 @@ class _SignUpFormState extends State<SignUpForm> {
         return null;
       },
       decoration: InputDecoration(
-        labelText: "Số điện thoại",
         hintText: "Nhập số điện thoại",
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
-        floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: CustomSuffixIcon(svgIcon: "assets/icons/Mail.svg"),
       ),
     );

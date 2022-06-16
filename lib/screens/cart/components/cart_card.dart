@@ -47,18 +47,19 @@ class _CartCardState extends State<CartCard> {
                 style: const TextStyle(color: textColorList, fontSize: textSizeList),
                 maxLines: 2,
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 2),
               Text.rich(
                 TextSpan(
                   text: Utilities.formatCurrency(widget.items.price),
                   style: const TextStyle(
                       fontWeight: FontWeight.w600, color: kPrimaryColor),
-                  children: [
-                    TextSpan(
-                        text: " x${widget.items.quantity}",
-                        style: Theme.of(context).textTheme.bodyText1),
-                  ],
                 ),
+              ),
+              const SizedBox(height: 2),
+              Text.rich(
+                TextSpan(
+                        text: "Số lượng: ${widget.items.quantity}",
+                        style: Theme.of(context).textTheme.bodyText1),
               )
             ],
           ),

@@ -1,4 +1,3 @@
-import 'package:clockecommerce/models/config.dart';
 import 'package:clockecommerce/models/constants.dart';
 import 'package:clockecommerce/models/favorites.dart';
 import 'package:clockecommerce/models/products.dart';
@@ -8,7 +7,6 @@ import 'package:clockecommerce/screens/details/details_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../../../services/api_service.dart';
 
 class Body extends StatefulWidget {
   const Body({ Key? key }) : super(key: key);
@@ -92,6 +90,7 @@ class _BodyState extends State<Body> {
         return Container(
           child: GestureDetector(
             onTap: () async {
+              Navigator.pushNamed(context, DetailsScreen.routeName, arguments: ProductDetailsArguments(product: data[index]));
               // var productDetail = await APIService.getProductById(data[index].id);
               // final result = await Navigator.pushNamed(context, DetailsScreen.routeName, arguments: ProductDetailsArguments(product: productDetail));
               // List<Products>? freshFutureProducts = result as List<Products>;

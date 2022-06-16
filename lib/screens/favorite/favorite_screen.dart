@@ -21,7 +21,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
           },
           child: const Icon(Icons.arrow_back_ios),
         ),
-        title: Text("Lượt thích", style: TextStyle(color: Colors.black)),
+        title: Text("Yêu thích", style: TextStyle(color: Colors.black)),
         backgroundColor: kPrimaryColor,
       ),
       body: Body(),

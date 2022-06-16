@@ -1,16 +1,9 @@
-import 'package:clockecommerce/models/config.dart';
 import 'package:clockecommerce/models/constants.dart';
-import 'package:clockecommerce/models/favorite_request_model.dart';
-import 'package:clockecommerce/models/product_detail.dart';
 import 'package:clockecommerce/models/products.dart';
 import 'package:clockecommerce/models/size_config.dart';
 import 'package:clockecommerce/models/utilities.dart';
 import 'package:clockecommerce/screens/details/details_screen.dart';
-import 'package:clockecommerce/services/api_service.dart';
-import 'package:clockecommerce/services/shared_service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:intl/intl.dart';
 
 class ProductCard extends StatefulWidget {
   const ProductCard({

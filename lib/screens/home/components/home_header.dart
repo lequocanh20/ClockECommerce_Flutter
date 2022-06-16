@@ -1,5 +1,6 @@
 import 'package:clockecommerce/models/size_config.dart';
 import 'package:clockecommerce/screens/cart/cart_screen.dart';
+import 'package:clockecommerce/screens/profile_detail/profiledetail_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'icon_btn_with_counter.dart';
@@ -31,9 +32,10 @@ class _HomeHeaderState extends State<HomeHeader> {
             },
           ),
           IconBtnWithCounter(
-            svgSrc: "assets/icons/Bell.svg",
-            numOfitem: 3,
-            press: () {},
+            svgSrc: "assets/icons/User Icon.svg",
+            press: () => {
+              Navigator.pushNamed(context, ProfileDetailScreen.routeName)
+            },
           ),
         ],
       ),

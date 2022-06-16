@@ -9,7 +9,7 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Quản lý tài khoản", style: TextStyle(color: Colors.black)),
+        title: Text("Tiện ích", style: TextStyle(color: Colors.black)),
         automaticallyImplyLeading: false,
         backgroundColor: kPrimaryColor,
       ),

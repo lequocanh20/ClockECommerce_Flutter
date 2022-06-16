@@ -5,8 +5,6 @@ import 'package:clockecommerce/models/product_detail.dart';
 import 'package:clockecommerce/models/products.dart';
 import 'package:clockecommerce/models/size_config.dart';
 import 'package:clockecommerce/screens/details/components/body.dart';
-import 'package:clockecommerce/services/api_service.dart';
-import 'package:clockecommerce/services/shared_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

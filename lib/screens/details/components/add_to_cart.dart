@@ -83,11 +83,20 @@ class _AddProductToCartState extends State<AddProductToCart> {
                       .catchError((error) => print('Failed to Add Product Into Cart: $error'));
               }
               if (listCart.any((e) => e.productId! + e.userId! == widget.items.products!.id + FirebaseAuth.instance.currentUser!.uid)) {
-                deleteProductInCart(widget.items.products!.id + FirebaseAuth.instance.currentUser!.uid).then((value) async {
-                  setState(() {
-                    listCart.removeWhere((element) => element.productId == widget.items.products!.id && element.userId == FirebaseAuth.instance.currentUser!.uid);
-                  });
-                });  
+                // deleteProductInCart(widget.items.products!.id + FirebaseAuth.instance.currentUser!.uid).then((value) async {
+                //   setState(() {
+                //     listCart.removeWhere((element) => element.productId == widget.items.products!.id && element.userId == FirebaseAuth.instance.currentUser!.uid);
+                //   });
+                // });
+                Fluttertoast.showToast(
+                  msg: "Bạn đã thêm sản phẩm này từ trước. Vui lòng kiểm tra lại giỏ hàng.",
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.TOP,
+                  timeInSecForIosWeb: 1,
+                  backgroundColor: Colors.red,
+                  textColor: Colors.white,
+                  fontSize: 16.0
+                );  
               } else {
                 addProductIntoCart(widget.items.products!, FirebaseAuth.instance.currentUser!.uid, widget.items.quantity!).then((value) async {
                   carts.get().then((value) {
@@ -97,12 +106,7 @@ class _AddProductToCartState extends State<AddProductToCart> {
                       });       
                     }
                   });
-                });
-              }
-                // Cart cart = Cart();
-                // cart.addProductToCart(widget.items);
-                // print(cart.getCart().length.toString());
-                Fluttertoast.showToast(
+                  Fluttertoast.showToast(
                     msg: "Đã thêm vào giỏ",
                     toastLength: Toast.LENGTH_SHORT,
                     gravity: ToastGravity.TOP,
@@ -110,7 +114,12 @@ class _AddProductToCartState extends State<AddProductToCart> {
                     backgroundColor: Colors.green,
                     textColor: Colors.white,
                     fontSize: 16.0
-                );
+                  );
+                });               
+              }
+                // Cart cart = Cart();
+                // cart.addProductToCart(widget.items);
+                // print(cart.getCart().length.toString());              
             }
       },
     );

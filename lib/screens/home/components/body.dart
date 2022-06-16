@@ -55,18 +55,12 @@ class _BodyState extends State<Body> {
           ),   
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
-                  "assets/icons/User Icon.svg"),
+                  "assets/icons/Settings.svg"),
             activeIcon: SvgPicture.asset(
-                  "assets/icons/User Icon.svg",
+                  "assets/icons/Settings.svg",
                   color: kPrimaryColor),
             label: 'Account',
-          ),          
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset("assets/icons/Chat bubble Icon.svg"),
-            activeIcon: SvgPicture.asset("assets/icons/Chat bubble Icon.svg",
-            color: kPrimaryColor),
-            label: 'Chat',
-          ),         
+          ),
         ],
       ),
       body: screen[selectIndex],
