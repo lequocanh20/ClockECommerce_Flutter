@@ -10,7 +10,7 @@ import 'package:clockecommerce/models/utilities.dart';
 import 'package:clockecommerce/screens/confirm_address_order/components/body.dart';
 import 'package:clockecommerce/screens/confirm_address_order/confirm_address_screen.dart';
 import 'package:clockecommerce/screens/home/home_screen.dart';
-import 'package:clockecommerce/screens/order_history/Order_History_Screen.dart';
+import 'package:clockecommerce/screens/order_history/order_history_screen.dart';
 import 'package:clockecommerce/screens/promotion/promotion_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
