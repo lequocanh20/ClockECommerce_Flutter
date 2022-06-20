@@ -1,3 +1,4 @@
+import 'package:clockecommerce/models/config.dart';
 import 'package:clockecommerce/models/constants.dart';
 import 'package:clockecommerce/models/product_detail.dart';
 import 'package:clockecommerce/models/products.dart';
@@ -11,7 +12,7 @@ class ProductImages extends StatefulWidget {
   }) : super(key: key);
 
   // final Products product;
-  final ProductDetail product;
+  final Products product;
 
   @override
   _ProductImagesState createState() => _ProductImagesState();
@@ -24,12 +25,12 @@ class _ProductImagesState extends State<ProductImages> {
     return Column(
       children: [
         SizedBox(
-          width: getProportionateScreenWidth(230),
+          width: getProportionateScreenWidth(205),
           child: AspectRatio(
             aspectRatio: 1,
             child: Hero(
               tag: widget.product.id.toString(),
-              child: Image.asset(widget.product.productImage!),
+              child: Image.network(widget.product.productImage!),
             ),
           ),
         ),

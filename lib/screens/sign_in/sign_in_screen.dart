@@ -7,9 +7,6 @@ class SignInScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Đăng nhập"),
-      ),
       body: Body(),
     );
   }

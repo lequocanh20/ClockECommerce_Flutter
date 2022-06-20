@@ -7,8 +7,6 @@ import 'package:clockecommerce/models/size_config.dart';
 import 'package:clockecommerce/models/utilities.dart';
 import 'package:clockecommerce/screens/details/components/add_to_cart.dart';
 import 'package:flutter/material.dart';
-
-import 'color_dots.dart';
 import 'product_description.dart';
 import 'top_rounded_container.dart';
 import 'product_images.dart';
@@ -16,7 +14,7 @@ import 'product_images.dart';
 class Body extends StatefulWidget {
   // final Products product;
 
-  final ProductDetail product;
+  final Products product;
 
   const Body({Key? key, required this.product}) : super(key: key);
 

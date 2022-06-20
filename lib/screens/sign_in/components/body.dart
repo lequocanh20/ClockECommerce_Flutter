@@ -17,38 +17,10 @@ class Body extends StatelessWidget {
             child: Column(
               children: [
                 SizedBox(height: SizeConfig.screenHeight! * 0.04),
-                Text(
-                  "Chào mừng",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: getProportionateScreenWidth(28),
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(
-                  "Đănh nhập bằng Email và mật khẩu  \nhoặc với những mạng xã hội khác",
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: SizeConfig.screenHeight! * 0.08),
+                Image.asset('assets/images/logo.png', height: getProportionateScreenWidth(200), width: getProportionateScreenWidth(200),),
+                SizedBox(height: SizeConfig.screenHeight! * 0.04),
                 SignForm(),
                 SizedBox(height: SizeConfig.screenHeight! * 0.08),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SocalCard(
-                      icon: "assets/icons/google-icon.svg",
-                      press: () {},
-                    ),
-                    SocalCard(
-                      icon: "assets/icons/facebook-2.svg",
-                      press: () {},
-                    ),
-                    SocalCard(
-                      icon: "assets/icons/twitter.svg",
-                      press: () {},
-                    ),
-                  ],
-                ),
                 SizedBox(height: getProportionateScreenHeight(20)),
                 NoAccountText(),
               ],

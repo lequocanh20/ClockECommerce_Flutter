@@ -11,4 +11,19 @@ class Cart {
   List<Items> getCart(){
     return cart;
   }
+
+  Cart ({
+    this.productId,
+    this.name,
+    this.price,
+    this.productImage,
+    this.userId,
+    this.quantity
+  });
+  String? productId;
+  String? name;
+  double? price;
+  String? productImage;
+  String? userId;
+  int? quantity;
 }

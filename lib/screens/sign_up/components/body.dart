@@ -18,37 +18,10 @@ class Body extends StatelessWidget {
             child: Column(
               children: [
                 SizedBox(height: SizeConfig.screenHeight! * 0.04), // 4%
-                Text("Đăng ký tài khoản", style: headingStyle),
-                Text(
-                  "Nhập thông tin cá nhân của bạn hoặc \ntiếp tục với các trang mạng xã hội khác",
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: SizeConfig.screenHeight! * 0.08),
+                Text("Đăng ký tài khoản", style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.black),),
+                SizedBox(height: SizeConfig.screenHeight! * 0.04),
                 SignUpForm(),
-                SizedBox(height: SizeConfig.screenHeight! * 0.08),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SocalCard(
-                      icon: "assets/icons/google-icon.svg",
-                      press: () {},
-                    ),
-                    SocalCard(
-                      icon: "assets/icons/facebook-2.svg",
-                      press: () {},
-                    ),
-                    SocalCard(
-                      icon: "assets/icons/twitter.svg",
-                      press: () {},
-                    ),
-                  ],
-                ),
-                SizedBox(height: getProportionateScreenHeight(20)),
-                Text(
-                  'Để tiếp tục bạn cần đồng ý \nvới các điều khoản của chúng tôi',
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.caption,
-                )
+                SizedBox(height: SizeConfig.screenHeight! * 0.04),                              
               ],
             ),
           ),

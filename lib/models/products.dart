@@ -23,10 +23,10 @@ class Products {
         this.reviews,
     });
 
-    int id;
+    String id;
     double originPrice;
     double price;
-    int categoryId;
+    String categoryId;
     int stock;
     DateTime dateCreated;
     String name;

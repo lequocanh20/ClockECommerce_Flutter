@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "484766518620",
+    "project_id": "clock-ecommerce-6248e",
+    "storage_bucket": "clock-ecommerce-6248e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:484766518620:android:b967b232b9f479b57dc599",
+        "android_client_info": {
+          "package_name": "com.example.clockecommerce"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "484766518620-ujj81mg67hlo6bl5qoc3r7dfso7ofdqq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQQ4lrEHCwHRc5qAu2yGOKzlMKpsXg3kA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "484766518620-ujj81mg67hlo6bl5qoc3r7dfso7ofdqq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

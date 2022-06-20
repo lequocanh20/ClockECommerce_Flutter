@@ -68,7 +68,6 @@ class SpecialOfferCard extends StatelessWidget {
           width: getProportionateScreenWidth(242),
           height: getProportionateScreenWidth(100),
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(20),
             child: Stack(
               children: [
                 Image.asset(

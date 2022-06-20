@@ -1,11 +1,12 @@
 import 'package:clockecommerce/models/carts.dart';
+import 'package:clockecommerce/models/config.dart';
 import 'package:clockecommerce/models/constants.dart';
 import 'package:clockecommerce/models/items.dart';
 import 'package:clockecommerce/models/size_config.dart';
 import 'package:clockecommerce/models/utilities.dart';
 import 'package:flutter/material.dart';
 class CartCard extends StatefulWidget {
-  final Items items;
+  final Cart items;
   CartCard({
     Key? key,
     required this.items
@@ -23,39 +24,42 @@ class _CartCardState extends State<CartCard> {
         SizedBox(
           width: 88,
           child: AspectRatio(
-            aspectRatio: 0.88,
+            aspectRatio: 1.02,
             child: Container(
-              padding: EdgeInsets.all(getProportionateScreenWidth(10)),
+              padding: EdgeInsets.all(getProportionateScreenWidth(5)),
               decoration: BoxDecoration(
-                color: Color(0xFFF5F6F9),
-                borderRadius: BorderRadius.circular(15),
+                color: kSecondaryColor.withOpacity(0.1),
               ),
-              child: Image.asset(widget.items.products!.productImage!),
+              child: Hero(
+                tag: widget.items.productId.toString(),
+                child: Image.network(widget.items.productImage!),
+              ),
             ),
           ),
         ),
-        SizedBox(width: 20),
+        const SizedBox(width: 20),
         Expanded(
           child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
               Text(
-                widget.items.products!.name,
-                style: TextStyle(color: Colors.black, fontSize: 16),
+                widget.items.name.toString(),
+                style: const TextStyle(color: textColorList, fontSize: textSizeList),
                 maxLines: 2,
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 2),
               Text.rich(
                 TextSpan(
-                  text: Utilities.formatCurrency(widget.items.products!.price),
-                  style: TextStyle(
+                  text: Utilities.formatCurrency(widget.items.price),
+                  style: const TextStyle(
                       fontWeight: FontWeight.w600, color: kPrimaryColor),
-                  children: [
-                    TextSpan(
-                        text: " x${widget.items.quantity}",
-                        style: Theme.of(context).textTheme.bodyText1),
-                  ],
                 ),
+              ),
+              const SizedBox(height: 2),
+              Text.rich(
+                TextSpan(
+                        text: "Số lượng: ${widget.items.quantity}",
+                        style: Theme.of(context).textTheme.bodyText1),
               )
             ],
           ),

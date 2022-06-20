@@ -15,7 +15,7 @@ class Categories {
         this.imageCate,
     });
 
-    int id;
+    String id;
     String name;
     String? imageCate;
 

@@ -1,5 +1,6 @@
 import 'package:clockecommerce/models/constants.dart';
 import 'package:clockecommerce/models/size_config.dart';
+import 'package:clockecommerce/screens/search/search_screen.dart';
 import 'package:flutter/material.dart';
 
 class SearchField extends StatelessWidget {
@@ -9,23 +10,37 @@ class SearchField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: SizeConfig.screenWidth! * 0.6,
-      decoration: BoxDecoration(
-        color: kSecondaryColor.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(15),
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(context, SearchScreen.routeName);
+      },
+      child: Container(
+        width: SizeConfig.screenWidth! * 0.6,
+        height: 50,
+        decoration: BoxDecoration(
+          color: kSecondaryColor.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(15),
+        ),
+      child: Row(
+        children: [
+          SizedBox(width: getProportionateScreenWidth(5)),
+          Icon(Icons.search),
+          SizedBox(width: getProportionateScreenWidth(5)),
+          const Text("Tìm kiếm sản phẩm")
+        ],
       ),
-      child: TextField(
-        onChanged: (value) => print(value),
-        decoration: InputDecoration(
-            contentPadding: EdgeInsets.symmetric(
-                horizontal: getProportionateScreenWidth(20),
-                vertical: getProportionateScreenWidth(9)),
-            border: InputBorder.none,
-            focusedBorder: InputBorder.none,
-            enabledBorder: InputBorder.none,
-            hintText: "Tìm kiếm sản phẩm",
-            prefixIcon: Icon(Icons.search)),
+      // child: Row(
+      //   children: [
+      //         IconButton(
+      //       icon: Icon(Icons.search),
+      //       alignment: Alignment.centerLeft,
+      //       onPressed: () {
+      //         // Navigator.pushNamed(context, SearchScreen.routeName);
+      //       },
+      //     ),
+      //     const Text("Tìm kiếm sản phẩm")
+      //   ],
+      // ),
       ),
     );
   }
